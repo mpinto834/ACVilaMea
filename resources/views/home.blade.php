@@ -13,18 +13,20 @@
     <header class="bg-dark text-white py-3">
         <div class="container d-flex justify-content-between align-items-center">
         <div class="logo">
-            <img src="images/AC-VILA-MEA.ico" alt="Logo do Clube" style="width: 50px; height: auto;">
+            <a href="/">
+                <img src="images/AC-VILA-MEA.ico" alt="Logo do Clube" style="width: 50px; height: auto;">
+            </a>
         </div>
             <nav>
                 <ul class="nav">
-                    <li class="nav-item"><a href="#" class="nav-link text-white">Notícias</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-white">Plantel</a></li>
+                    <li class="nav-item"><a href="noticias" class="nav-link text-white">Notícias</a></li>
+                    <li class="nav-item"><a href="plantel" class="nav-link text-white">Plantel</a></li>
                     <li class="nav-item"><a href="#" class="nav-link text-white">Loja</a></li>
                     <li class="nav-item"><a href="#" class="nav-link text-white">Calendário</a></li>
                     <li class="nav-item"><a href="#" class="nav-link text-white">Galeria</a></li>
                 </ul>
             </nav>
-            <div class="user-icon fs-4">👤</div>
+            <a href="/login" class="user-icon fs-4" style="cursor: pointer; text-decoration: none; color: white;">👤</a>
         </div>
     </header>
 
@@ -144,5 +146,31 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Modal de Login -->
+    <div class="modal fade" id="login" tabindex="-1" aria-labelledby="loginLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginLabel">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/login" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Entrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

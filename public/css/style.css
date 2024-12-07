@@ -79,6 +79,9 @@ section h2 {
     font-weight: bold;
     color: #333;
 }
+.ranking {
+    min-height: 100%; /* Garante que a altura corresponda às outras colunas */
+}
 
 .ranking ul {
     list-style: none;
@@ -133,4 +136,119 @@ section h2 {
 
 .latest-news button:hover {
     background: #333; /* Alterado de vermelho escuro (#900) para cinza escuro (#333) */
+}
+
+.login-container {
+    background: #fff;
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.login-container h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.login-container .form-control {
+    border: 1px solid #ddd;
+    padding: 0.8rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.login-container .btn-primary {
+    background-color: #000;
+    border: none;
+    padding: 0.8rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.login-container .btn-primary:hover {
+    background-color: #333;
+}
+
+.login-container .text-muted {
+    margin-top: 1.5rem;
+}
+
+.login-container a {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-container a:hover {
+    color: #333;
+    text-decoration: underline;
+
+}
+
+/* Estilo para o formulário de registro */
+.register-container {
+    background: #fff;
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.register-container h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.register-container .form-control {
+    border: 1px solid #ddd;
+    padding: 0.8rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.register-container .btn-primary {
+    background-color: #000;
+    border: none;
+    padding: 0.8rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.register-container .btn-primary:hover {
+    background-color: #333;
+}
+
+.register-container .text-muted {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.register-container a {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-container a:hover {
+    color: #333;
+    text-decoration: underline;
+}
+
+/* Ajustes adicionais, se necessário */
+.register-container .form-label {
+    font-weight: bold;
+    color: #333;
+}
+
+.register-container .form-control:focus {
+    border-color: #000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
