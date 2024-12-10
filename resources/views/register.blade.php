@@ -109,6 +109,15 @@
         @enderror
     </div>
 
+    <!-- Foto de Perfil -->
+                <div class="mb-3">
+                    <label for="profile_photo" class="form-label">Foto de Perfil</label>
+                    <input type="file" class="form-control" id="profile_photo" name="profile_photo" accept="image/*">
+                    @error('profile_photo')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
     <!-- Botão de Registro -->
     <button type="submit" class="btn btn-primary w-100">Registrar</button>
     <p class="text-center text-muted mt-3">Já tem uma conta? <a href="/login">Faça login aqui</a></p>
