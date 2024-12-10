@@ -13,20 +13,20 @@
     <header class="bg-dark text-white py-3">
         <div class="container d-flex justify-content-between align-items-center">
         <div class="logo">
-        <a href="/">
+            <a href="/">
                 <img src="images/AC-VILA-MEA.ico" alt="Logo do Clube" style="width: 50px; height: auto;">
             </a>
         </div>
             <nav>
                 <ul class="nav">
-                    <li class="nav-item"><a href="#" class="nav-link text-white">Notícias</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-white">Plantel</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-white">Loja</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-white">Calendário</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-white">Galeria</a></li>
+                    <li class="nav-item"><a href="noticias" class="nav-link text-white">Notícias</a></li>
+                    <li class="nav-item"><a href="plantel" class="nav-link text-white">Plantel</a></li>
+                    <li class="nav-item"><a href="loja" class="nav-link text-white">Loja</a></li>
+                    <li class="nav-item"><a href="calendario" class="nav-link text-white">Calendário</a></li>
+                    <li class="nav-item"><a href="galeria" class="nav-link text-white">Galeria</a></li>
                 </ul>
             </nav>
-            <div class="user-icon fs-4">👤</div>
+            <a href="/login" class="user-icon fs-4" style="cursor: pointer; text-decoration: none; color: white;">👤</a>
         </div>
     </header>
     <div class="container my-4">
