@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ProfileController; 
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PlantelController; 
+use App\Http\Controllers\GaleriaController;
 
 // Página inicial
 Route::get('/', function () {
@@ -12,10 +14,10 @@ Route::get('/', function () {
 });
 
 // Páginas públicas (não requerem autenticação)
-Route::view('/plantel', 'plantel');
+Route::get('/plantel', [PlantelController::class, 'show'])->name('plantel.show');
 Route::view('/news', 'news');
 Route::view('/store', 'loja');
-Route::view('/galery', 'galeria');
+Route::get('/galeria', action: [GaleriaController::class, 'show'])->name('galeria.show');
 Route::view('/calendar', 'calendario');
 
 // Páginas de autenticação
@@ -48,6 +50,7 @@ Route::middleware('auth')->group(function () {
 
 // Rota para as notícias
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+Route::get('/news/{noticia}', [NewsController::class, 'show'])->name('noticias.show');
 
 // Rotas protegidas para administradores
 Route::middleware('auth')->group(function () {
@@ -55,6 +58,24 @@ Route::middleware('auth')->group(function () {
     Route::post('/noticias', [NewsController::class, 'store'])->name('noticias.store');
     Route::put('/noticias/{noticia}', [NewsController::class, 'update'])->name('noticias.update');
     Route::delete('/noticias/{noticia}', [NewsController::class, 'destroy'])->name('noticias.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+
+// Novas rotas para gerenciamento do plantel
+Route::get('/gerir-plantel', [PlantelController::class, 'index'])->name('plantel.index');
+Route::post('/plantel', [PlantelController::class, 'store'])->name('plantel.store');
+Route::put('/plantel/{jogador}', [PlantelController::class, 'update'])->name('plantel.update');
+Route::delete('/plantel/{jogador}', [PlantelController::class, 'destroy'])->name('plantel.destroy');
+});
+
+
+// Rotas protegidas para administrar a galeria
+Route::middleware('auth')->group(function () {
+    Route::get('/gerir-galeria', [GaleriaController::class, 'index'])->name('galeria.index');
+    Route::post('/galeria', [GaleriaController::class, 'store'])->name('galeria.store');
+    Route::put('/galeria/{foto}', [GaleriaController::class, 'update'])->name('galeria.update');
+    Route::delete('/galeria/{foto}', [GaleriaController::class, 'destroy'])->name('galeria.destroy');
 });
 
 

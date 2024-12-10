@@ -88,4 +88,9 @@ class NewsController extends Controller
             return redirect()->back()->with('error', 'Erro ao excluir a notícia: ' . $e->getMessage());
         }
     }
+
+    public function show(News $noticia)
+    {
+        return view('noticia-detalhe', compact('noticia'));
+    }
 }

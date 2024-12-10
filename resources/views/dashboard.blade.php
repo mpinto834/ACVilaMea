@@ -23,7 +23,7 @@
                     <li class="nav-item"><a href="plantel" class="nav-link text-white">Plantel</a></li>
                     <li class="nav-item"><a href="store" class="nav-link text-white">Loja</a></li>
                     <li class="nav-item"><a href="calendar" class="nav-link text-white">Calendário</a></li>
-                    <li class="nav-item"><a href="galery" class="nav-link text-white">Galeria</a></li>
+                    <li class="nav-item"><a href="galeria" class="nav-link text-white">Galeria</a></li>
                 </ul>
             </nav>
             <!-- Dropdown do usuário -->
@@ -102,7 +102,7 @@
                                 <a href="/gerir-plantel" class="btn btn-outline-primary">Gerir Plantel</a>
                                 <a href="/gerir-artigos" class="btn btn-outline-primary">Gerir Artigos</a>
                                 <a href="/gerir-jogos" class="btn btn-outline-primary">Gerir Jogos</a>
-                                <a href="/gerir-fotos" class="btn btn-outline-primary">Gerir Fotos</a>
+                                <a href="/gerir-galeria" class="btn btn-outline-primary">Gerir Fotos</a>
                             </div>
                         </div>
                     </div>

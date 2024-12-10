@@ -14,16 +14,16 @@
         <div class="container d-flex justify-content-between align-items-center">
         <div class="logo">
             <a href="/">
-                <img src="images/AC-VILA-MEA.ico" alt="Logo do Clube" style="width: 50px; height: auto;">
+                <img src="{{ asset('images/AC-VILA-MEA.ico') }}" alt="Logo do Clube" style="width: 50px; height: auto;">
             </a>
         </div>
             <nav>
                 <ul class="nav">
-                    <li class="nav-item"><a href="news" class="nav-link text-white">Notícias</a></li>
-                    <li class="nav-item"><a href="plantel" class="nav-link text-white">Plantel</a></li>
-                    <li class="nav-item"><a href="store" class="nav-link text-white">Loja</a></li>
-                    <li class="nav-item"><a href="calendar" class="nav-link text-white">Calendário</a></li>
-                    <li class="nav-item"><a href="galery" class="nav-link text-white">Galeria</a></li>
+                    <li class="nav-item px-2"><a href="/news" class="nav-link text-white">Notícias</a></li>
+                    <li class="nav-item px-2"><a href="/plantel" class="nav-link text-white">Plantel</a></li>
+                    <li class="nav-item px-2"><a href="/store" class="nav-link text-white">Loja</a></li>
+                    <li class="nav-item px-2"><a href="/calendar" class="nav-link text-white">Calendário</a></li>
+                    <li class="nav-item px-2"><a href="/galery" class="nav-link text-white">Galeria</a></li>
                 </ul>
             </nav>
             @if(Auth::check())
@@ -50,24 +50,23 @@
     @endif
         </div>
     </header>
-    <div class="container my-4">
-        <h2 class="text-center mb-4">Últimas Notícias</h2>
-        <div class="row g-4">
-            @foreach($noticias as $noticia)
-            <div class="col-md-4">
-                <a href="{{ route('noticias.show', $noticia) }}" class="text-decoration-none text-dark">
-                    <div class="card h-100">
-                        <img src="{{ Storage::url($noticia->image) }}" 
-                             alt="{{ $noticia->title }}" 
-                             class="card-img-top p-3">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">{{ $noticia->title }}</h5>
-                            <p class="card-text">{{ Str::limit($noticia->content, 100) }}</p>
-                        </div>
-                    </div>
-                </a>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <h1 class="text-center">{{ $noticia->title }}</h1>
+                <p class="text-muted text-center">{{ $noticia->created_at->format('d/m/Y') }}</p>
             </div>
-            @endforeach
+            <div class="col-md-6">
+                <img src="{{ Storage::url($noticia->image) }}" 
+                     alt="{{ $noticia->title }}" 
+                     class="img-fluid rounded shadow">
+            </div>
+            <div class="col-md-6">
+                <div class="content">
+                    {!! nl2br(e($noticia->content)) !!}
+                </div>
+            </div>
         </div>
     </div>
 

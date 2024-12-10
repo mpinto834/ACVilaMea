@@ -54,67 +54,67 @@
         <h2 class="text-center mb-4">Plantel Completo</h2>
 
         <!-- Guarda-Redes -->
-        <h3 class="text-center mb-3">Guarda-Redes</h3>
+        <h3 class="text-center mb-3">Guarda Redes</h3>
         <div class="row row-cols-1 row-cols-md-4 g-4">
-            <!-- Exemplo de guarda-redes -->
-            <div class="col">
-                <div class="card h-100 border rounded shadow-sm">
-                    <img src="{{ asset('images/jogadores/guarda-redes1.jpg') }}" class="card-img-top p-3" alt="Guarda-Redes 1">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-0">Nome do Guarda-Redes</h5>
-                        <p class="text-muted">#Número</p>
+            @foreach($jogadores->where('posicao', 'Guarda Redes') as $jogador)
+                <div class="col">
+                    <div class="card h-100 border rounded shadow-sm">
+                        <img src="{{ Storage::url($jogador->foto) }}" class="card-img-top p-3" alt="{{ $jogador->nome }}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title mb-0">{{ $jogador->nome }}</h5>
+                            <p class="text-muted">#{{ $jogador->numero }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Repita o bloco acima para cada guarda-redes -->
+            @endforeach
         </div>
 
         <!-- Defesas -->
         <h3 class="text-center mb-3">Defesas</h3>
         <div class="row row-cols-1 row-cols-md-4 g-4">
-            <!-- Exemplo de defesa -->
-            <div class="col">
-                <div class="card h-100 border rounded shadow-sm">
-                    <img src="{{ asset('images/jogadores/defesa1.jpg') }}" class="card-img-top p-3" alt="Defesa 1">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-0">Nome do Defesa</h5>
-                        <p class="text-muted">#Número</p>
+            @foreach($jogadores->where('posicao', 'Defesa') as $jogador)
+                <div class="col">
+                    <div class="card h-100 border rounded shadow-sm">
+                        <img src="{{ Storage::url($jogador->foto) }}" class="card-img-top p-3" alt="{{ $jogador->nome }}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title mb-0">{{ $jogador->nome }}</h5>
+                            <p class="text-muted">#{{ $jogador->numero }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Repita o bloco acima para cada defesa -->
+            @endforeach
         </div>
 
         <!-- Médios -->
         <h3 class="text-center mb-3">Médios</h3>
         <div class="row row-cols-1 row-cols-md-4 g-4">
-            <!-- Exemplo de médio -->
-            <div class="col">
-                <div class="card h-100 border rounded shadow-sm">
-                    <img src="{{ asset('images/jogadores/medio1.jpg') }}" class="card-img-top p-3" alt="Médio 1">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-0">Nome do Médio</h5>
-                        <p class="text-muted">#Número</p>
+            @foreach($jogadores->where('posicao', 'Médio') as $jogador)
+                <div class="col">
+                    <div class="card h-100 border rounded shadow-sm">
+                        <img src="{{ Storage::url($jogador->foto) }}" class="card-img-top p-3" alt="{{ $jogador->nome }}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title mb-0">{{ $jogador->nome }}</h5>
+                            <p class="text-muted">#{{ $jogador->numero }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Repita o bloco acima para cada médio -->
+            @endforeach
         </div>
 
         <!-- Avançados -->
         <h3 class="text-center mb-3">Avançados</h3>
         <div class="row row-cols-1 row-cols-md-4 g-4">
-            <!-- Exemplo de avançado -->
-            <div class="col">
-                <div class="card h-100 border rounded shadow-sm">
-                    <img src="{{ asset('images/jogadores/avancado1.jpg') }}" class="card-img-top p-3" alt="Avançado 1">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-0">Nome do Avançado</h5>
-                        <p class="text-muted">#Número</p>
+            @foreach($jogadores->where('posicao', 'Avançado') as $jogador)
+                <div class="col">
+                    <div class="card h-100 border rounded shadow-sm">
+                        <img src="{{ Storage::url($jogador->foto) }}" class="card-img-top p-3" alt="{{ $jogador->nome }}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title mb-0">{{ $jogador->nome }}</h5>
+                            <p class="text-muted">#{{ $jogador->numero }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Repita o bloco acima para cada avançado -->
+            @endforeach
         </div>
     </div>
 
