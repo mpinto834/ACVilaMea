@@ -34,50 +34,85 @@
     <div class="container">
         <div class="register-container">
             <h2>Registro</h2>
-            <form>
-                <!-- Nome Completo -->
-                <div class="mb-3">
-                    <label for="firstName" class="form-label">Primeiro Nome</label>
-                    <input type="text" class="form-control" id="firstName" placeholder="Seu primeiro nome">
-                </div>
-                <div class="mb-3">
-                    <label for="lastName" class="form-label">Último Nome</label>
-                    <input type="text" class="form-control" id="lastName" placeholder="Seu último nome">
-                </div>
-                <!-- Username -->
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" placeholder="Seu username">
-                </div>
-                <!-- Email -->
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Seu email">
-                </div>
-                <!-- Data de Nascimento -->
-                <div class="mb-3">
-                    <label for="birthDate" class="form-label">Data de Nascimento</label>
-                    <input type="date" class="form-control" id="birthDate">
-                </div>
-                <!-- Número de Telefone -->
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Número de Telefone</label>
-                    <input type="tel" class="form-control" id="phone" placeholder="Seu número de telefone">
-                </div>
-                <!-- Senha -->
-                <div class="mb-3">
-                    <label for="password" class="form-label">Senha</label>
-                    <input type="password" class="form-control" id="password" placeholder="Sua senha">
-                </div>
-                <!-- Confirmação da Senha -->
-                <div class="mb-3">
-                    <label for="confirmPassword" class="form-label">Confirmação de Senha</label>
-                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirme sua senha">
-                </div>
-                <!-- Botão de Registro -->
-                <button type="submit" class="btn btn-primary w-100">Registrar</button>
-                <p class="text-center text-muted mt-3">Já tem uma conta? <a href="/login">Faça login aqui</a></p>
-            </form>
+            <form action="{{ route('register') }}" method="POST">
+    @csrf
+
+    <!-- Primeiro Nome -->
+    <div class="mb-3">
+        <label for="firstName" class="form-label">Primeiro Nome</label>
+        <input type="text" class="form-control" id="firstName" name="first_name" placeholder="Seu primeiro nome" value="{{ old('first_name') }}" required>
+        @error('first_name')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <!-- Último Nome -->
+    <div class="mb-3">
+        <label for="lastName" class="form-label">Último Nome</label>
+        <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Seu último nome" value="{{ old('last_name') }}" required>
+        @error('last_name')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <!-- Username -->
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Seu username" value="{{ old('username') }}" required>
+        @error('username')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <!-- Email -->
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Seu email" value="{{ old('email') }}" required>
+        @error('email')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <!-- Data de Nascimento -->
+    <div class="mb-3">
+        <label for="birthDate" class="form-label">Data de Nascimento</label>
+        <input type="date" class="form-control" id="birthDate" name="birth_date" value="{{ old('birth_date') }}">
+        @error('birth_date')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <!-- Número de Telefone -->
+    <div class="mb-3">
+        <label for="phone" class="form-label">Número de Telefone</label>
+        <input type="tel" class="form-control" id="phone" name="phone_number" placeholder="Seu número de telefone" value="{{ old('phone_number') }}">
+        @error('phone_number')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <!-- Senha -->
+    <div class="mb-3">
+        <label for="password" class="form-label">Senha</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Sua senha" required>
+        @error('password')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <!-- Confirmação da Senha -->
+    <div class="mb-3">
+        <label for="confirmPassword" class="form-label">Confirmação de Senha</label>
+        <input type="password" class="form-control" id="confirmPassword" name="password_confirmation" placeholder="Confirme sua senha" required>
+        @error('password_confirmation')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <!-- Botão de Registro -->
+    <button type="submit" class="btn btn-primary w-100">Registrar</button>
+    <p class="text-center text-muted mt-3">Já tem uma conta? <a href="/login">Faça login aqui</a></p>
+</form>
         </div>
     </div>
 

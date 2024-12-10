@@ -34,18 +34,44 @@
     <div class="container">
         <div class="login-container">
             <h2>Login</h2>
-            <form>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Seu email">
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Senha</label>
-                    <input type="password" class="form-control" id="password" placeholder="Sua senha">
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Entrar</button>
-                <p class="text-center text-muted">Não tem conta? <a href="/register">Registre-se aqui</a></p>
-            </form>
+            <!-- resources/views/auth/login.blade.php -->
+<form action="{{ route('login') }}" method="POST">
+    @csrf  <!-- Proteção contra CSRF -->
+
+    <!-- Campo de Email -->
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Seu email" value="{{ old('email') }}" required>
+        
+        <!-- Exibir erro caso haja algum -->
+        @error('email')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <!-- Campo de Senha -->
+    <div class="mb-3">
+        <label for="password" class="form-label">Senha</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Sua senha" required>
+        
+        <!-- Exibir erro caso haja algum -->
+        @error('password')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <!-- Lembrar de mim -->
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="remember" name="remember">
+        <label class="form-check-label" for="remember">Lembrar de mim</label>
+    </div>
+
+    <!-- Botão de Entrar -->
+    <button type="submit" class="btn btn-primary w-100">Entrar</button>
+
+    <!-- Link para registro -->
+    <p class="text-center text-muted mt-3">Não tem conta? <a href="/register">Registre-se aqui</a></p>
+</form>
         </div>
     </div>
 
