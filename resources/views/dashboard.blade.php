@@ -91,8 +91,21 @@
                         <p class="text-muted">{{ Auth::user()->username }}</p>
                     </div>
                 </div>
-            </div>
 
+                <!-- Card de Gerenciamento movido para dentro da coluna -->
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Gerenciamento</h5>
+                        <div class="d-grid gap-2">
+                            <a href="/gerir-noticias" class="btn btn-outline-primary">Gerir Notícias</a>
+                            <a href="/gerir-plantel" class="btn btn-outline-primary">Gerir Plantel</a>
+                            <a href="/gerir-artigos" class="btn btn-outline-primary">Gerir Artigos</a>
+                            <a href="/gerir-jogos" class="btn btn-outline-primary">Gerir Jogos</a>
+                            <a href="/gerir-fotos" class="btn btn-outline-primary">Gerir Fotos</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Coluna das Informações -->
             <div class="col-md-8">
                 <div class="card">
