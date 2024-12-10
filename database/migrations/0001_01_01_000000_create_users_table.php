@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('phone_number', 15)->nullable();
             $table->date('birth_date')->nullable();
             $table->string('password');
+            $table->string('profile_photo')->nullable();  // Adiciona a coluna para a foto de perfil
             $table->rememberToken();
             $table->timestamps(); 
         });

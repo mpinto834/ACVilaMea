@@ -21,9 +21,9 @@
                 <ul class="nav">
                     <li class="nav-item"><a href="#" class="nav-link text-white">Notícias</a></li>
                     <li class="nav-item"><a href="#" class="nav-link text-white">Plantel</a></li>
-                    <li class="nav-item"><a href="loja.html" class="nav-link text-white">Loja</a></li>
-                    <li class="nav-item"><a href="calendario.html" class="nav-link text-white">Calendário</a></li>
-                    <li class="nav-item"><a href="galeria.html" class="nav-link text-white">Galeria</a></li>
+                    <li class="nav-item"><a href="loja" class="nav-link text-white">Loja</a></li>
+                    <li class="nav-item"><a href="calendario" class="nav-link text-white">Calendário</a></li>
+                    <li class="nav-item"><a href="galeria" class="nav-link text-white">Galeria</a></li>
                 </ul>
             </nav>
             <div class="user-icon fs-4">👤</div>
