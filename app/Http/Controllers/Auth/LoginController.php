@@ -44,6 +44,7 @@ class LoginController extends Controller
         Auth::logout();  // Desloga o usuário
 
         // Redireciona após o logout
-        return redirect('/login');
+        return redirect('/');
     }
+
 }
