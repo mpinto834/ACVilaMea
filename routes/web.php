@@ -26,6 +26,18 @@ Route::get('/dashboard',function(){
     return view('dashboard');
 });
 
+Route::get('/loja',function(){
+    return view('loja');
+});
+
+Route::get('/galeria',function(){
+    return view('galeria');
+});
+
+Route::get('/calendario',function(){
+    return view('calendario');
+});
+
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -52,5 +64,4 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     // Rota para atualizar a foto do perfil
     Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.photo.update');
-});
 
