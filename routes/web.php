@@ -11,7 +11,7 @@ Route::get('/plantel',function(){
 });
 
 Route::get('/news',function(){
-    return view('noticias');
+    return view('news');
 });
 
 Route::get('/login',function(){
@@ -26,15 +26,15 @@ Route::get('/dashboard',function(){
     return view('dashboard');
 });
 
-Route::get('/loja',function(){
+Route::get('/store',function(){
     return view('loja');
 });
 
-Route::get('/galeria',function(){
+Route::get('/galery',function(){
     return view('galeria');
 });
 
-Route::get('/calendario',function(){
+Route::get('/calendar',function(){
     return view('calendario');
 });
 
