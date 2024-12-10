@@ -53,52 +53,22 @@
     <div class="container my-4">
         <h2 class="text-center mb-4">Últimas Notícias</h2>
         <div class="row g-4">
-            <!-- Exemplo de notícia -->
+            @foreach($noticias as $noticia)
             <div class="col-md-4">
                 <div class="card h-100">
-                    <img src="images/noticia1.jpg" alt="Notícia 1" class="card-img-top p-3">
+                    <!-- Exibe a imagem da notícia -->
+                    <img src="{{ asset('storage/'.$noticia->imagem) }}" alt="{{ $noticia->titulo }}" class="card-img-top p-3">
                     <div class="card-body text-center">
-                        <h5 class="card-title">Título da Notícia 1</h5>
+                        <h5 class="card-title">{{ $noticia->titulo }}</h5>
+                        <p class="card-text">{{ Str::limit($noticia->conteudo, 100) }}</p> <!-- Exibe um resumo do conteúdo -->
                     </div>
                 </div>
             </div>
-            <!-- Repita o bloco acima para cada notícia -->
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <img src="images/noticia2.jpg" alt="Notícia 2" class="card-img-top p-3">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Título da Notícia 2</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <img src="images/noticia3.jpg" alt="Notícia 3" class="card-img-top p-3">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Título da Notícia 3</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <img src="images/noticia4.jpg" alt="Notícia 4" class="card-img-top p-3">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Título da Notícia 4</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <img src="images/noticia5.jpg" alt="Notícia 5" class="card-img-top p-3">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Título da Notícia 5</h5>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>

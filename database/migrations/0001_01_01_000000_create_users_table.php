@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('birth_date')->nullable();
             $table->string('password');
             $table->string('profile_photo')->nullable();  // Adiciona a coluna para a foto de perfil
+            $table->tinyInteger('role')->default(0); // 0 = normal user, 1 = member, 2 = admin
             $table->rememberToken();
             $table->timestamps(); 
         });

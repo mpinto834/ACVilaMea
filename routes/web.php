@@ -10,7 +10,7 @@ Route::get('/plantel',function(){
     return view('plantel');
 });
 
-Route::get('/noticias',function(){
+Route::get('/news',function(){
     return view('noticias');
 });
 
@@ -41,7 +41,9 @@ Route::get('/calendario',function(){
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileController; 
+use App\Http\Controllers\NewsController;
+
 
 Route::post('/register', [RegisterController::class, 'store'])->name('register');
 
@@ -65,3 +67,4 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     // Rota para atualizar a foto do perfil
     Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.photo.update');
 
+    Route::get('/news', [NewsController::class, 'index']);

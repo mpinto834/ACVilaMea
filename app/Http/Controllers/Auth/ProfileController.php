@@ -73,7 +73,7 @@ class ProfileController extends BaseController
     {
         try {
             $request->validate([
-                'photo' => ['required', 'image', 'max:10000'], // Máximo 2MB
+                'photo' => ['required', 'image', 'max:2048'], // Máximo 2MB
             ]);
 
             $user = Auth::user();
