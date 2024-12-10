@@ -26,7 +26,28 @@
                     <li class="nav-item"><a href="galeria" class="nav-link text-white">Galeria</a></li>
                 </ul>
             </nav>
-            <a href="/login" class="user-icon fs-4" style="cursor: pointer; text-decoration: none; color: white;">👤</a>
+            @if(Auth::check())
+            <div class="dropdown">
+                <a class="text-white text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ Auth::user()->profile_photo ?? 'images/default-avatar.png' }}" alt="Foto de Perfil" 
+                         class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                    <span class="ms-2">{{ Auth::user()->first_name }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="dropdown-item">Sair</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+    @else
+        <!-- Usuário não autenticado: Redirecionar para Login -->
+        <a href="/login" class="user-icon fs-4" style="cursor: pointer; text-decoration: none; color: white;">👤</a>
+    @endif
         </div>
     </header>
 
