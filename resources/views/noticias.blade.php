@@ -56,11 +56,15 @@
             @foreach($noticias as $noticia)
             <div class="col-md-4">
                 <div class="card h-100">
-                    <!-- Exibe a imagem da notícia -->
-                    <img src="{{ asset('storage/'.$noticia->imagem) }}" alt="{{ $noticia->titulo }}" class="card-img-top p-3">
+                    <!-- Mudando imagem para image -->
+                    <img src="{{ Storage::url($noticia->image) }}" 
+                         alt="{{ $noticia->title }}" 
+                         class="card-img-top p-3">
                     <div class="card-body text-center">
-                        <h5 class="card-title">{{ $noticia->titulo }}</h5>
-                        <p class="card-text">{{ Str::limit($noticia->conteudo, 100) }}</p> <!-- Exibe um resumo do conteúdo -->
+                        <!-- Mudando titulo para title -->
+                        <h5 class="card-title">{{ $noticia->title }}</h5>
+                        <!-- Mudando conteudo para content -->
+                        <p class="card-text">{{ Str::limit($noticia->content, 100) }}</p>
                     </div>
                 </div>
             </div>

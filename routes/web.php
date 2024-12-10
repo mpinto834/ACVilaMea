@@ -47,4 +47,14 @@ Route::middleware('auth')->group(function () {
 });
 
 // Rota para as notícias
-Route::get('/news', [NewsController::class, 'index']);
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+
+// Rotas protegidas para administradores
+Route::middleware('auth')->group(function () {
+    Route::get('/gerir-noticias', [NewsController::class, 'index'])->name('noticias.index');
+    Route::post('/noticias', [NewsController::class, 'store'])->name('noticias.store');
+    Route::put('/noticias/{noticia}', [NewsController::class, 'update'])->name('noticias.update');
+    Route::delete('/noticias/{noticia}', [NewsController::class, 'destroy'])->name('noticias.destroy');
+});
+
+
