@@ -29,7 +29,7 @@
             @if(Auth::check())
             <div class="dropdown">
                 <a class="text-white text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{{ Auth::user()->profile_photo ?? 'images/default-avatar.png' }}" alt="Foto de Perfil" 
+                <img src="{{ Auth::user()->profile_photo ? Storage::url(Auth::user()->profile_photo) : 'images/default-avatar.png' }}" alt="Foto de Perfil" 
                          class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
                     <span class="ms-2">{{ Auth::user()->first_name }}</span>
                 </a>

@@ -37,6 +37,7 @@ class ProfileController extends BaseController
             $user->email = $validated['email'];
             $user->birth_date = $validated['birth_date'];
             $user->phone_number = $validated['phone_number'];
+            $user->save();
 
             return redirect()->back()->with('success', 'Perfil atualizado com sucesso!');
         } catch (\Exception $e) {
@@ -60,6 +61,7 @@ class ProfileController extends BaseController
             ]);
 
             $user->password = Hash::make($request->password);
+            $user->save();
 
             return redirect()->back()->with('success', 'Senha atualizada com sucesso!');
         } catch (\Exception $e) {
@@ -71,7 +73,7 @@ class ProfileController extends BaseController
     {
         try {
             $request->validate([
-                'photo' => ['required', 'image', 'max:2048'], // Máximo 2MB
+                'photo' => ['required', 'image', 'max:10000'], // Máximo 2MB
             ]);
 
             $user = Auth::user();
@@ -85,7 +87,8 @@ class ProfileController extends BaseController
                 // Armazena a nova foto
                 $path = $request->file('photo')->store('profile-photos', 'public');
                 
-                $user->profile_photo = $path;
+                $user->profile_photo = $path; 
+                $user->save();
 
                 return redirect()->back()->with('success', 'Foto de perfil atualizada com sucesso!');
             }
