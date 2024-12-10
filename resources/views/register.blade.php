@@ -34,7 +34,7 @@
     <div class="container">
         <div class="register-container">
             <h2>Registro</h2>
-            <form action="{{ route('register') }}" method="POST">
+            <form action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
     <!-- Primeiro Nome -->
