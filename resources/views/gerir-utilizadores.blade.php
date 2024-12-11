@@ -94,6 +94,13 @@
                                                     data-bs-target="#editRole{{ $user->id }}">
                                                 <i class="fas fa-edit"></i> Alterar Função
                                             </button>
+                                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir este usuário?')">
+                                                    <i class="fas fa-trash"></i> Excluir
+                                                </button>
+                                            </form>
                                         @endif
                                     </td>
                                 </tr>

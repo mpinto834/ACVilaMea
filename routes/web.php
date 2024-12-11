@@ -83,6 +83,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/gerir-utilizadores', [UserController::class, 'index'])->name('users.index');
     Route::put('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update.role');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 });
+
 
 
