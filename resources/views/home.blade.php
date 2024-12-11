@@ -57,28 +57,36 @@
             <!-- Coluna Esquerda -->
             <div class="col-md-8">
                 <!-- Próximo Jogo -->
-                <section class="next-game mb-4">
-                    <h2 class="text-center">Próximo Jogo</h2>
-                    <div class="row align-items-center text-center py-3 border rounded bg-light">
-                        <div class="col-md-4 fs-5 fw-bold">Porto</div>
-                        <div class="col-md-4">
-                            <p class="mb-1">10 de Dezembro de 2025</p>
-                            <p class="mb-1">20:00</p>
-                            <p>Estádio do Dragão</p>
-                        </div>
-                        <div class="col-md-4 fs-5 fw-bold">Benfica</div>
-                    </div>
-                </section>
+<section class="next-game mb-4">
+    <h2 class="text-center">Próximo Jogo</h2>
+    @if($nextGame)
+        <div class="row align-items-center text-center py-3 border rounded bg-light">
+            <div class="col-md-4 fs-5 fw-bold">{{ $nextGame->team1 }}</div>
+            <div class="col-md-4">
+                <p class="mb-1">{{ \Carbon\Carbon::parse($nextGame->date)->format('d de F de Y') }}</p>
+                <p class="mb-1">{{ \Carbon\Carbon::parse($nextGame->date)->format('H:i') }}</p>
+                <p>{{ $nextGame->location ?? 'Local não especificado' }}</p>
+            </div>
+            <div class="col-md-4 fs-5 fw-bold">{{ $nextGame->team2 }}</div>
+        </div>
+    @else
+        <p class="text-center">Nenhum próximo jogo agendado.</p>
+    @endif
+</section>
 
-                <!-- Resultado do Último Jogo -->
-                <section class="last-result mb-4">
-                    <h2 class="text-center">Resultado do Último Jogo</h2>
-                    <div class="row align-items-center text-center py-3 border rounded bg-light">
-                        <div class="col-md-4 fs-5 fw-bold">Porto</div>
-                        <div class="col-md-4 fs-4 fw-bold text-primary">34 - 33</div>
-                        <div class="col-md-4 fs-5 fw-bold">Benfica</div>
-                    </div>
-                </section>
+<!-- Resultado do Último Jogo -->
+<section class="last-result mb-4">
+    <h2 class="text-center">Resultado do Último Jogo</h2>
+    @if($previousGame)
+        <div class="row align-items-center text-center py-3 border rounded bg-light">
+            <div class="col-md-4 fs-5 fw-bold">{{ $previousGame->team1 }}</div>
+            <div class="col-md-4 fs-4 fw-bold text-primary">{{ $previousGame->result }}</div>
+            <div class="col-md-4 fs-5 fw-bold">{{ $previousGame->team2 }}</div>
+        </div>
+    @else
+        <p class="text-center">Nenhum resultado de jogo anterior disponível.</p>
+    @endif
+</section>
             </div>
 
             <!-- Coluna Direita -->
@@ -128,39 +136,26 @@
         </div>
 
         <!-- Últimas Notícias -->
-        <section class="latest-news">
-            <h2 class="text-center">Últimas Notícias</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <img src="logo.png" alt="Notícia" class="card-img-top p-3">
-                        <div class="card-body text-center">
-                            <p class="text-muted mb-1">20 de Novembro, 2024</p>
-                            <h5 class="card-title">Vitória Importante Contra o X</h5>
+        <section class="news-section">
+            <div class="container">
+                <h2 class="text-center">Últimas Notícias</h2>
+                <div class="row">
+                    @foreach($latestNews as $news)
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <img src="{{ asset('storage/' . $news->image) }}" class="card-img-top" alt="{{ $news->title }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $news->title }}</h5>
+                                    <p class="card-text">{{ Str::limit($news->content, 100) }}</p>
+                                    <a href="{{ route('noticias.show', $news->slug) }}" class="btn btn-primary">Leia Mais</a>
+                                 </div>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <img src="logo.png" alt="Notícia" class="card-img-top p-3">
-                        <div class="card-body text-center">
-                            <p class="text-muted mb-1">18 de Novembro, 2024</p>
-                            <h5 class="card-title">Jogador X é Destaque no Campeonato</h5>
-                        </div>
-                    </div>
+                <div class="text-center mt-4">
+                    <a href="{{ route('news.index') }}" class="btn btn-primary">Ver Mais Notícias</a>
                 </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <img src="logo.png" alt="Notícia" class="card-img-top p-3">
-                        <div class="card-body text-center">
-                            <p class="text-muted mb-1">15 de Novembro, 2024</p>
-                            <h5 class="card-title">Preparativos para o Jogo Decisivo</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-4">
-                <button class="btn btn-primary">Ver Mais Notícias</button>
             </div>
         </section>
     </main>

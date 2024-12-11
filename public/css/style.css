@@ -288,3 +288,17 @@ section h2 {
     border-color: #000;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
+.news-section .card {
+    height: 100%;
+}
+
+.news-section .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.news-section .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

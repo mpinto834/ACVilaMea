@@ -8,18 +8,19 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PlantelController; 
 use App\Http\Controllers\GaleriaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\GameController;
 
 // Página inicial
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Páginas públicas (não requerem autenticação)
 Route::get('/plantel', [PlantelController::class, 'show'])->name('plantel.show');
 Route::view('/noticias', 'noticias');
 Route::view('/loja', 'loja');
 Route::get('/galeria', action: [GaleriaController::class, 'show'])->name('galeria.show');
-Route::view('/calendario', 'calendario');
+Route::get('/calendario', [GameController::class, 'calendario'])->name('calendario');
+
 
 // Páginas de autenticação
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -84,6 +85,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/gerir-utilizadores', [UserController::class, 'index'])->name('users.index');
     Route::put('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update.role');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+});
+
+//rotas para administrar os jogos
+Route::middleware('auth')->group(function () {
+    Route::get('/gerir-jogos', [GameController::class, 'index'])->name('games.index');
+    Route::post('/games', [GameController::class, 'store'])->name('games.store');
+    Route::delete('/games/{game}', [GameController::class, 'destroy'])->name('games.destroy');
+    Route::put('/games/{game}', [GameController::class, 'update'])->name('games.update');
 });
 
 
