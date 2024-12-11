@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerir Galeria</title>
+    <title>Gerir Utilizadores</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -19,11 +19,11 @@
             </div>
             <nav>
                 <ul class="nav">
-                    <li class="nav-item"><a href="noticias" class="nav-link text-white">Notícias</a></li>
+                    <li class="nav-item"><a href="news" class="nav-link text-white">Notícias</a></li>
                     <li class="nav-item"><a href="plantel" class="nav-link text-white">Plantel</a></li>
-                    <li class="nav-item"><a href="loja" class="nav-link text-white">Loja</a></li>
-                    <li class="nav-item"><a href="calendario" class="nav-link text-white">Calendário</a></li>
-                    <li class="nav-item"><a href="galeria" class="nav-link text-white">Galeria</a></li>
+                    <li class="nav-item"><a href="store" class="nav-link text-white">Loja</a></li>
+                    <li class="nav-item"><a href="calendar" class="nav-link text-white">Calendário</a></li>
+                    <li class="nav-item"><a href="galery" class="nav-link text-white">Galeria</a></li>
                 </ul>
             </nav>
             @if(Auth::check())
@@ -49,6 +49,7 @@
     </header>
 
     <div class="container my-4">
+        <!-- Mensagens de Feedback -->
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -56,91 +57,66 @@
             </div>
         @endif
 
-        <!-- Seção Nova Foto -->
-        <div class="card mb-4">
-            <div class="card-header bg-dark text-white">
-                <h5 class="mb-0">Nova Foto</h5>
-            </div>
-            <div class="card-body">
-                <form action="{{ route('galeria.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="imagem" class="form-label">Selecionar Imagem</label>
-                        <input type="file" class="form-control" id="imagem" name="imagem" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="legenda" class="form-label">Legenda</label>
-                        <input type="text" class="form-control" id="legenda" name="legenda" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Adicionar Foto</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Lista de Fotos -->
+        <!-- Lista de Utilizadores -->
         <div class="card">
             <div class="card-header bg-dark text-white">
-                <h5 class="mb-0">Fotos Existentes</h5>
+                <h5 class="mb-0">Gestão de Utilizadores</h5>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Imagem</th>
-                                <th>Legenda</th>
+                                <th>Nome</th>
+                                <th>Username</th>
+                                <th>Função Atual</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($fotos as $foto)
+                            @foreach($users as $user)
                                 <tr>
+                                    <td>{{ $user->first_name }} {{ $user->last_name }}</td>
+                                    <td>{{ $user->username }}</td>
                                     <td>
-                                        <img src="{{ Storage::url($foto->imagem) }}" 
-                                             alt="Imagem da Galeria" 
-                                             style="width: 100px; height: 60px; object-fit: cover;">
+                                        @if($user->role === 0)
+                                            Utilizador
+                                        @elseif($user->role === 1)
+                                            Editor
+                                        @elseif($user->role === 2)
+                                            Administrador
+                                        @endif
                                     </td>
-                                    <td>{{ $foto->legenda }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-sm btn-primary" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#editFoto{{ $foto->id }}">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <form action="{{ route('galeria.destroy', $foto) }}" 
-                                              method="POST" 
-                                              class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" 
-                                                    onclick="return confirm('Tem certeza que deseja excluir esta foto?')">
-                                                <i class="fas fa-trash"></i>
+                                        @if(Auth::user()->role === 2 && Auth::id() !== $user->id)
+                                            <button class="btn btn-sm btn-primary" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#editRole{{ $user->id }}">
+                                                <i class="fas fa-edit"></i> Alterar Função
                                             </button>
-                                        </form>
+                                        @endif
                                     </td>
                                 </tr>
 
-                                <!-- Modal de Edição -->
-                                <div class="modal fade" id="editFoto{{ $foto->id }}" tabindex="-1">
+                                <!-- Modal de Edição de Função -->
+                                <div class="modal fade" id="editRole{{ $user->id }}" tabindex="-1">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Editar Foto</h5>
+                                                <h5 class="modal-title">Alterar Função do Utilizador</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                             </div>
-                                            <form action="{{ route('galeria.update', $foto->id) }}" 
-                                                  method="POST">
+                                            <form action="{{ route('users.update.role', $user->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="modal-body">
                                                     <div class="mb-3">
-                                                        <label for="editLegenda{{ $foto->id }}" class="form-label">Legenda</label>
-                                                        <input type="text" 
-                                                               class="form-control" 
-                                                               id="editLegenda{{ $foto->id }}" 
-                                                               name="legenda" 
-                                                               value="{{ $foto->legenda }}" 
-                                                               required>
+                                                        <label class="form-label">Nova Função</label>
+                                                        <select class="form-select" name="role" required>
+                                                            <option value="0" {{ $user->role === 0 ? 'selected' : '' }}>Utilizador</option>
+                                                            <option value="1" {{ $user->role === 1 ? 'selected' : '' }}>Editor</option>
+                                                            <option value="2" {{ $user->role === 2 ? 'selected' : '' }}>Administrador</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -161,4 +137,4 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>

@@ -19,11 +19,11 @@
         </div>
             <nav>
                 <ul class="nav">
-                    <li class="nav-item"><a href="news" class="nav-link text-white">Notícias</a></li>
+                    <li class="nav-item"><a href="noticias" class="nav-link text-white">Notícias</a></li>
                     <li class="nav-item"><a href="plantel" class="nav-link text-white">Plantel</a></li>
-                    <li class="nav-item"><a href="store" class="nav-link text-white">Loja</a></li>
-                    <li class="nav-item"><a href="calendar" class="nav-link text-white">Calendário</a></li>
-                    <li class="nav-item"><a href="galery" class="nav-link text-white">Galeria</a></li>
+                    <li class="nav-item"><a href="loja" class="nav-link text-white">Loja</a></li>
+                    <li class="nav-item"><a href="calendario" class="nav-link text-white">Calendário</a></li>
+                    <li class="nav-item"><a href="galeria" class="nav-link text-white">Galeria</a></li>
                 </ul>
             </nav>
             @if(Auth::check())
@@ -55,7 +55,7 @@
         <div class="row g-4">
             @foreach($noticias as $noticia)
             <div class="col-md-4">
-                <a href="{{ route('noticias.show', $noticia) }}" class="text-decoration-none text-dark">
+                <a href="{{ route('noticias.show', $noticia->slug) }}" class="text-decoration-none text-dark">
                     <div class="card h-100">
                         <img src="{{ Storage::url($noticia->image) }}" 
                              alt="{{ $noticia->title }}" 

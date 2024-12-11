@@ -19,10 +19,10 @@
             </div>
             <nav>
                 <ul class="nav">
-                    <li class="nav-item"><a href="news" class="nav-link text-white">Notícias</a></li>
+                    <li class="nav-item"><a href="noticias" class="nav-link text-white">Notícias</a></li>
                     <li class="nav-item"><a href="plantel" class="nav-link text-white">Plantel</a></li>
-                    <li class="nav-item"><a href="store" class="nav-link text-white">Loja</a></li>
-                    <li class="nav-item"><a href="calendar" class="nav-link text-white">Calendário</a></li>
+                    <li class="nav-item"><a href="loja" class="nav-link text-white">Loja</a></li>
+                    <li class="nav-item"><a href="calendario" class="nav-link text-white">Calendário</a></li>
                     <li class="nav-item"><a href="galeria" class="nav-link text-white">Galeria</a></li>
                 </ul>
             </nav>
@@ -96,13 +96,14 @@
                 @if(Auth::user()->role === 2)
                     <div class="card mt-3">
                         <div class="card-body">
-                            <h5 class="card-title">Gerenciamento</h5>
+                            <h5 class="card-title">Gestão</h5>
                             <div class="d-grid gap-2">
                                 <a href="/gerir-noticias" class="btn btn-outline-primary">Gerir Notícias</a>
                                 <a href="/gerir-plantel" class="btn btn-outline-primary">Gerir Plantel</a>
                                 <a href="/gerir-artigos" class="btn btn-outline-primary">Gerir Artigos</a>
                                 <a href="/gerir-jogos" class="btn btn-outline-primary">Gerir Jogos</a>
                                 <a href="/gerir-galeria" class="btn btn-outline-primary">Gerir Fotos</a>
+                                <a href="/gerir-utilizadores" class="btn btn-outline-primary">Gerir Utilizadores</a>
                             </div>
                         </div>
                     </div>

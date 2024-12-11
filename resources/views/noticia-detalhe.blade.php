@@ -19,11 +19,11 @@
         </div>
             <nav>
                 <ul class="nav">
-                    <li class="nav-item px-2"><a href="/news" class="nav-link text-white">Notícias</a></li>
+                    <li class="nav-item px-2"><a href="/noticias" class="nav-link text-white">Notícias</a></li>
                     <li class="nav-item px-2"><a href="/plantel" class="nav-link text-white">Plantel</a></li>
-                    <li class="nav-item px-2"><a href="/store" class="nav-link text-white">Loja</a></li>
-                    <li class="nav-item px-2"><a href="/calendar" class="nav-link text-white">Calendário</a></li>
-                    <li class="nav-item px-2"><a href="/galery" class="nav-link text-white">Galeria</a></li>
+                    <li class="nav-item px-2"><a href="/loja" class="nav-link text-white">Loja</a></li>
+                    <li class="nav-item px-2"><a href="/calendario" class="nav-link text-white">Calendário</a></li>
+                    <li class="nav-item px-2"><a href="/galeria" class="nav-link text-white">Galeria</a></li>
                 </ul>
             </nav>
             @if(Auth::check())

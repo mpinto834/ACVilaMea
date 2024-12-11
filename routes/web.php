@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PlantelController; 
 use App\Http\Controllers\GaleriaController;
+use App\Http\Controllers\UserController;
 
 // Página inicial
 Route::get('/', function () {
@@ -15,10 +16,10 @@ Route::get('/', function () {
 
 // Páginas públicas (não requerem autenticação)
 Route::get('/plantel', [PlantelController::class, 'show'])->name('plantel.show');
-Route::view('/news', 'news');
-Route::view('/store', 'loja');
+Route::view('/noticias', 'noticias');
+Route::view('/loja', 'loja');
 Route::get('/galeria', action: [GaleriaController::class, 'show'])->name('galeria.show');
-Route::view('/calendar', 'calendario');
+Route::view('/calendario', 'calendario');
 
 // Páginas de autenticação
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -49,8 +50,8 @@ Route::middleware('auth')->group(function () {
 });
 
 // Rota para as notícias
-Route::get('/news', [NewsController::class, 'index'])->name('news.index');
-Route::get('/news/{noticia}', [NewsController::class, 'show'])->name('noticias.show');
+Route::get('/noticias', [NewsController::class, 'index'])->name('news.index');
+Route::get('/noticias/{slug}', [NewsController::class, 'show'])->name('noticias.show');
 
 // Rotas protegidas para administradores
 Route::middleware('auth')->group(function () {
@@ -76,6 +77,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/galeria', [GaleriaController::class, 'store'])->name('galeria.store');
     Route::put('/galeria/{foto}', [GaleriaController::class, 'update'])->name('galeria.update');
     Route::delete('/galeria/{foto}', [GaleriaController::class, 'destroy'])->name('galeria.destroy');
+});
+
+//Rotas protegidas para administrar os utilizadores
+Route::middleware('auth')->group(function () {
+    Route::get('/gerir-utilizadores', [UserController::class, 'index'])->name('users.index');
+    Route::put('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update.role');
 });
 
 

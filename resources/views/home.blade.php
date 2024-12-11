@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site Esportivo</title>
+    <title>AC Vila Meã</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css"> <!-- Mantém o estilo customizado -->
@@ -19,11 +19,11 @@
         </div>
             <nav>
                 <ul class="nav">
-                    <li class="nav-item"><a href="news" class="nav-link text-white">Notícias</a></li>
+                    <li class="nav-item"><a href="noticias" class="nav-link text-white">Notícias</a></li>
                     <li class="nav-item"><a href="plantel" class="nav-link text-white">Plantel</a></li>
-                    <li class="nav-item"><a href="store" class="nav-link text-white">Loja</a></li>
-                    <li class="nav-item"><a href="calendar" class="nav-link text-white">Calendário</a></li>
-                    <li class="nav-item"><a href="galery" class="nav-link text-white">Galeria</a></li>
+                    <li class="nav-item"><a href="loja" class="nav-link text-white">Loja</a></li>
+                    <li class="nav-item"><a href="calendario" class="nav-link text-white">Calendário</a></li>
+                    <li class="nav-item"><a href="galeria" class="nav-link text-white">Galeria</a></li>
                 </ul>
             </nav>
             @if(Auth::check())

@@ -89,8 +89,9 @@ class NewsController extends Controller
         }
     }
 
-    public function show(News $noticia)
-    {
+    public function show($slug)
+    {   
+        $noticia= News::where('slug', $slug)->firstOrFail();
         return view('noticia-detalhe', compact('noticia'));
     }
 }
