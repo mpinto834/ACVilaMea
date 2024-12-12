@@ -59,7 +59,8 @@
                     <div class="card h-100">
                         <img src="{{ Storage::url($noticia->image) }}" 
                              alt="{{ $noticia->title }}" 
-                             class="card-img-top p-3">
+                             class="card-img-top p-3"
+                             style="height: 200px; object-fit: cover;">
                         <div class="card-body text-center">
                             <h5 class="card-title">{{ $noticia->title }}</h5>
                             <p class="card-text">{{ Str::limit($noticia->content, 100) }}</p>

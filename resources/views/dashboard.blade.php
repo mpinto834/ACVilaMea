@@ -104,6 +104,7 @@
                                 <a href="/gerir-jogos" class="btn btn-outline-primary">Gerir Jogos</a>
                                 <a href="/gerir-galeria" class="btn btn-outline-primary">Gerir Fotos</a>
                                 <a href="/gerir-utilizadores" class="btn btn-outline-primary">Gerir Utilizadores</a>
+                                <a href="/gerir-standings" class="btn btn-outline-primary">Gerir Standings</a>
                             </div>
                         </div>
                     </div>
