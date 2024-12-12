@@ -68,7 +68,7 @@
                                 <div><i class="fas fa-map-marker-alt"></i> {{ $game->location }}</div>
                             </div>
                             <div class="col-md-4">
-                                <img src="{{ asset('storage/' . $game->team2_photo) }}" alt="Logo {{ $game->team2_name }}" style="width: 60px; height: auto;">
+                                <img src="{{ asset($game->team2_photo) }}" alt="Logo {{ $game->team2_name }}" style="width: 60px; height: auto;">
                                 <div class="mt-2 fw-bold">{{ $game->team2_name }}</div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                                 <div><i class="fas fa-map-marker-alt"></i> {{ $game->location }}</div>
                             </div>
                             <div class="col-md-4">
-                                <img src="{{ asset('storage/' . $game->team2_photo) }}" alt="Logo {{ $game->team2_name }}" style="width: 60px; height: auto;">
+                                <img src="{{ asset($game->team2_photo) }}" alt="Logo {{ $game->team2_name }}" style="width: 60px; height: auto;">
                                 <div class="mt-2 fw-bold">{{ $game->team2_name }}</div>
                             </div>
                         </div>

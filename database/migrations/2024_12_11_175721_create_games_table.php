@@ -9,6 +9,7 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
+            $table->enum('game_type', ['home', 'away'])->after('id');
             $table->string('team1_name');
             $table->string('team1_photo')->default('images/AC-VILA-MEA.ico');
             $table->string('team2_name');

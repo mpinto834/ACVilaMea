@@ -88,7 +88,18 @@
                             </div>
                         </form>
                         <h4 class="mb-0">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h4>
-                        <p class="text-muted">{{ Auth::user()->username }}</p>
+                        <p class="text-muted">{{ Auth::user()->username }} - 
+                            @switch(Auth::user()->role)
+                                @case(1)
+                                    Sócio
+                                    @break
+                                @case(2)
+                                    Admin
+                                    @break
+                                @default
+                                    Não Sócio
+                            @endswitch
+                        </p>
                                         </div>
                 </div>
 

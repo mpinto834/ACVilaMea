@@ -64,24 +64,35 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="team2_name" class="form-label">Nome da Equipa Adversária</label>
-                            <input type="text" class="form-control" id="team2_name" name="team2_name" required>
+                            <label for="game_type" class="form-label">Tipo de Jogo</label>
+                            <select class="form-control" id="game_type" name="game_type" required>
+                                <option value="home">Jogo em Casa</option>
+                                <option value="away">Jogo Fora</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="team2_photo" class="form-label">Logo da Equipa Adversária</label>
-                            <input type="file" class="form-control" id="team2_photo" name="team2_photo" required>
+                            <label for="team2_name" class="form-label">Nome da Equipa Adversária</label>
+                            <input type="text" class="form-control" id="team2_name" name="team2_name" required>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
+                            <label for="team2_photo" class="form-label">Logo da Equipa Adversária</label>
+                            <input type="file" class="form-control" id="team2_photo" name="team2_photo" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
                             <label for="location" class="form-label">Local do Jogo</label>
                             <input type="text" class="form-control" id="location" name="location" required>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="date_time" class="form-label">Data e Hora do Jogo</label>
@@ -114,7 +125,7 @@
                                     {{ $game->team1_name }}
                                 </td>
                                 <td>
-                                    <img src="{{ asset('storage/' . $game->team2_photo) }}" alt="Logo Visitante" style="width: 30px">
+                                    <img src="{{ asset($game->team2_photo) }}" alt="Logo Visitante" style="width: 30px">
                                     {{ $game->team2_name }}
                                 </td>
                                 <td>{{ $game->location }}</td>

@@ -62,7 +62,7 @@
     @if($nextGame)
         <div class="row align-items-center text-center py-3 border rounded bg-light">
             <div class="col-md-4">
-                <img src="{{ asset('images/AC-VILA-MEA.ico') }}" alt="Logo {{ $nextGame->team1_name }}" style="width: 80px; height: auto;">
+                <img src="{{ asset($nextGame->team1_photo) }}" alt="Logo {{ $nextGame->team1_name }}" style="width: 80px; height: auto;">
                 <div class="mt-2 fs-5 fw-bold">{{ $nextGame->team1_name }}</div>
             </div>
             <div class="col-md-4">
@@ -71,7 +71,7 @@
                 <p class="mb-0"><i class="fas fa-map-marker-alt"></i> {{ $nextGame->location }}</p>
             </div>
             <div class="col-md-4">
-                <img src="{{ asset('storage/' . $nextGame->team2_photo) }}" alt="Logo {{ $nextGame->team2_name }}" style="width: 80px; height: auto;">
+                <img src="{{ asset($nextGame->team2_photo) }}" alt="Logo {{ $nextGame->team2_name }}" style="width: 80px; height: auto;">
                 <div class="mt-2 fs-5 fw-bold">{{ $nextGame->team2_name }}</div>
             </div>
         </div>
@@ -90,12 +90,14 @@
                 <div class="mt-2 fs-5 fw-bold">{{ $previousGame->team1_name }}</div>
             </div>
             <div class="col-md-4 game-info-center">
-                <div class="game-result">{{ $previousGame->result }}</div>
+                @if($previousGame->result)
+                    <div class="game-result">{{ $previousGame->result }}</div>
+                @endif
                 <p class="mb-1">{{ $previousGame->date_time->format('d/m/Y') }}</p>
                 <p class="mb-0"><i class="fas fa-map-marker-alt"></i> {{ $previousGame->location }}</p>
             </div>
             <div class="col-md-4">
-                <img src="{{ asset('storage/' . $previousGame->team2_photo) }}" alt="Logo {{ $previousGame->team2_name }}" style="width: 80px; height: auto;">
+                <img src="{{ asset($previousGame->team2_photo) }}" alt="Logo {{ $previousGame->team2_name }}" style="width: 80px; height: auto;">
                 <div class="mt-2 fs-5 fw-bold">{{ $previousGame->team2_name }}</div>
             </div>
         </div>

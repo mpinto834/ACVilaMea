@@ -17,18 +17,36 @@ class GameController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'game_type' => 'required|in:home,away',
             'team2_name' => 'required|string|max:255',
             'team2_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'location' => 'required|string|max:255',
             'date_time' => 'required|date',
         ]);
 
-        $data = $request->all();
-        $data['team1_name'] = 'AC Vila Meã';
-        $data['team1_photo'] = 'images/AC-VILA-MEA.ico';
-
         if ($request->hasFile('team2_photo')) {
-            $data['team2_photo'] = $request->file('team2_photo')->store('team_photos', 'public');
+            $team2_photo = 'storage/' . $request->file('team2_photo')->store('team_photos', 'public');
+        }
+
+        $data = [
+            'game_type' => $request->game_type,
+            'location' => $request->location,
+            'date_time' => $request->date_time
+        ];
+
+        // Se for jogo em casa
+        if ($request->game_type === 'home') {
+            $data['team1_name'] = 'AC Vila Meã';
+            $data['team1_photo'] = 'images/AC-VILA-MEA.ico';
+            $data['team2_name'] = $request->team2_name;
+            $data['team2_photo'] = $team2_photo;
+        } 
+        // Se for jogo fora
+        else {
+            $data['team1_name'] = $request->team2_name;
+            $data['team1_photo'] = $team2_photo;
+            $data['team2_name'] = 'AC Vila Meã';
+            $data['team2_photo'] = 'images/AC-VILA-MEA.ico';
         }
 
         Game::create($data);
