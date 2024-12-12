@@ -10,6 +10,7 @@ use App\Http\Controllers\GaleriaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\ArtigoController;
 
 // Página inicial
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -93,6 +94,24 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::delete('/games/{game}', [GameController::class, 'destroy'])->name('games.destroy');
     Route::put('/games/{game}', [GameController::class, 'update'])->name('games.update');
 });
+
+// Rotas para gerenciamento de artigos (protegidas por autenticação e middleware admin)
+Route::middleware(['auth', 'isAdmin'])->group(function () {
+    // Lista todos os artigos (view de gerenciamento)
+    Route::get('/gerir-artigos', [ArtigoController::class, 'index'])->name('artigos.index');
+    
+    // Criar novo artigo
+    Route::post('/artigos', [ArtigoController::class, 'store'])->name('artigos.store');
+    
+    // Atualizar artigo existente
+    Route::put('/artigos/{artigo}', [ArtigoController::class, 'update'])->name('artigos.update');
+    
+    // Excluir artigo
+    Route::delete('/artigos/{artigo}', [ArtigoController::class, 'destroy'])->name('artigos.destroy');
+});
+
+// Rota pública para visualizar a loja
+Route::get('/loja', [ArtigoController::class, 'loja'])->name('loja');
 
 
 
