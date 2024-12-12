@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\ProfileController; 
+use App\Http\Controllers\Auth\ProfileController; 
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PlantelController; 
 use App\Http\Controllers\GaleriaController;

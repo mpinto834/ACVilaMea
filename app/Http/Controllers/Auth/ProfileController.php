@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-use Illuminate\Routing\Controller as BaseController;
-
-class ProfileController extends BaseController
+class ProfileController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
     }
 
     public function update(Request $request)
@@ -31,13 +28,7 @@ class ProfileController extends BaseController
                 'phone_number' => ['nullable', 'string', 'max:15'],
             ]);
 
-            $user->first_name = $validated['first_name'];
-            $user->last_name = $validated['last_name'];
-            $user->username = $validated['username'];
-            $user->email = $validated['email'];
-            $user->birth_date = $validated['birth_date'];
-            $user->phone_number = $validated['phone_number'];
-            $user->save();
+            $user->update($validated);
 
             return redirect()->back()->with('success', 'Perfil atualizado com sucesso!');
         } catch (\Exception $e) {
@@ -60,8 +51,9 @@ class ProfileController extends BaseController
                 'password_confirmation' => ['required'],
             ]);
 
-            $user->password = Hash::make($request->password);
-            $user->save();
+            $user->update([
+                'password' => Hash::make($request->password)
+            ]);
 
             return redirect()->back()->with('success', 'Senha atualizada com sucesso!');
         } catch (\Exception $e) {
@@ -87,15 +79,16 @@ class ProfileController extends BaseController
                 // Armazena a nova foto
                 $path = $request->file('photo')->store('profile-photos', 'public');
                 
-                $user->profile_photo = $path; 
-                $user->save();
+                $user->update([
+                    'profile_photo' => $path
+                ]);
 
                 return redirect()->back()->with('success', 'Foto de perfil atualizada com sucesso!');
             }
 
             return redirect()->back()->with('error', 'Nenhuma foto foi enviada.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Erro ao atualizar a foto.');
+            return redirect()->back()->with('error', 'Erro ao atualizar a foto: ' . $e->getMessage());
         }
     }
 }
