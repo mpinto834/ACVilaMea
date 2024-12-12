@@ -55,16 +55,15 @@ Route::get('/noticias', [NewsController::class, 'index'])->name('news.index');
 Route::get('/noticias/{slug}', [NewsController::class, 'show'])->name('noticias.show');
 
 // Rotas protegidas para administradores
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/gerir-noticias', [NewsController::class, 'index'])->name('noticias.index');
     Route::post('/noticias', [NewsController::class, 'store'])->name('noticias.store');
     Route::put('/noticias/{noticia}', [NewsController::class, 'update'])->name('noticias.update');
     Route::delete('/noticias/{noticia}', [NewsController::class, 'destroy'])->name('noticias.destroy');
 });
 
-Route::middleware('auth')->group(function () {
-
 // Novas rotas para gerenciamento do plantel
+Route::middleware(['auth', 'isAdmin'])->group(function () {
 Route::get('/gerir-plantel', [PlantelController::class, 'index'])->name('plantel.index');
 Route::post('/plantel', [PlantelController::class, 'store'])->name('plantel.store');
 Route::put('/plantel/{jogador}', [PlantelController::class, 'update'])->name('plantel.update');
@@ -73,7 +72,7 @@ Route::delete('/plantel/{jogador}', [PlantelController::class, 'destroy'])->name
 
 
 // Rotas protegidas para administrar a galeria
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/gerir-galeria', [GaleriaController::class, 'index'])->name('galeria.index');
     Route::post('/galeria', [GaleriaController::class, 'store'])->name('galeria.store');
     Route::put('/galeria/{foto}', [GaleriaController::class, 'update'])->name('galeria.update');
@@ -81,14 +80,14 @@ Route::middleware('auth')->group(function () {
 });
 
 //Rotas protegidas para administrar os utilizadores
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/gerir-utilizadores', [UserController::class, 'index'])->name('users.index');
     Route::put('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.update.role');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 });
 
 //rotas para administrar os jogos
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/gerir-jogos', [GameController::class, 'index'])->name('games.index');
     Route::post('/games', [GameController::class, 'store'])->name('games.store');
     Route::delete('/games/{game}', [GameController::class, 'destroy'])->name('games.destroy');
