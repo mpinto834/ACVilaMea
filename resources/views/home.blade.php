@@ -61,13 +61,19 @@
     <h2 class="text-center">Próximo Jogo</h2>
     @if($nextGame)
         <div class="row align-items-center text-center py-3 border rounded bg-light">
-            <div class="col-md-4 fs-5 fw-bold">{{ $nextGame->team1 }}</div>
             <div class="col-md-4">
-                <p class="mb-1">{{ \Carbon\Carbon::parse($nextGame->date)->format('d de F de Y') }}</p>
-                <p class="mb-1">{{ \Carbon\Carbon::parse($nextGame->date)->format('H:i') }}</p>
-                <p>{{ $nextGame->location ?? 'Local não especificado' }}</p>
+                <img src="{{ asset($nextGame->team1_photo) }}" alt="Logo {{ $nextGame->team1_name }}" style="width: 80px; height: auto;">
+                <div class="mt-2 fs-5 fw-bold">{{ $nextGame->team1_name }}</div>
             </div>
-            <div class="col-md-4 fs-5 fw-bold">{{ $nextGame->team2 }}</div>
+            <div class="col-md-4">
+                <p class="mb-1">{{ $nextGame->date_time->format('d/m/Y') }}</p>
+                <p class="mb-1">{{ $nextGame->date_time->format('H:i') }}</p>
+                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> {{ $nextGame->location }}</p>
+            </div>
+            <div class="col-md-4">
+                <img src="{{ asset('storage/' . $nextGame->team2_photo) }}" alt="Logo {{ $nextGame->team2_name }}" style="width: 80px; height: auto;">
+                <div class="mt-2 fs-5 fw-bold">{{ $nextGame->team2_name }}</div>
+            </div>
         </div>
     @else
         <p class="text-center">Nenhum próximo jogo agendado.</p>
@@ -79,12 +85,22 @@
     <h2 class="text-center">Resultado do Último Jogo</h2>
     @if($previousGame)
         <div class="row align-items-center text-center py-3 border rounded bg-light">
-            <div class="col-md-4 fs-5 fw-bold">{{ $previousGame->team1 }}</div>
-            <div class="col-md-4 fs-4 fw-bold text-primary">{{ $previousGame->result }}</div>
-            <div class="col-md-4 fs-5 fw-bold">{{ $previousGame->team2 }}</div>
+            <div class="col-md-4">
+                <img src="{{ asset($previousGame->team1_photo) }}" alt="Logo {{ $previousGame->team1_name }}" style="width: 80px; height: auto;">
+                <div class="mt-2 fs-5 fw-bold">{{ $previousGame->team1_name }}</div>
+            </div>
+            <div class="col-md-4 game-info-center">
+                <div class="game-result">{{ $previousGame->result }}</div>
+                <p class="mb-1">{{ $previousGame->date_time->format('d/m/Y') }}</p>
+                <p class="mb-0"><i class="fas fa-map-marker-alt"></i> {{ $previousGame->location }}</p>
+            </div>
+            <div class="col-md-4">
+                <img src="{{ asset('storage/' . $previousGame->team2_photo) }}" alt="Logo {{ $previousGame->team2_name }}" style="width: 80px; height: auto;">
+                <div class="mt-2 fs-5 fw-bold">{{ $previousGame->team2_name }}</div>
+            </div>
         </div>
     @else
-        <p class="text-center">Nenhum resultado de jogo anterior disponível.</p>
+        <p class="text-center">Nenhum resultado disponível.</p>
     @endif
 </section>
             </div>
