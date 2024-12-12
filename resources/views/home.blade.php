@@ -62,7 +62,7 @@
     @if($nextGame)
         <div class="row align-items-center text-center py-3 border rounded bg-light">
             <div class="col-md-4">
-x                <img src="{{ asset('images/AC-VILA-MEA.ico') }}" alt="Logo {{ $nextGame->team1_name }}" style="width: 80px; height: auto;">
+                <img src="{{ asset('images/AC-VILA-MEA.ico') }}" alt="Logo {{ $nextGame->team1_name }}" style="width: 80px; height: auto;">
                 <div class="mt-2 fs-5 fw-bold">{{ $nextGame->team1_name }}</div>
             </div>
             <div class="col-md-4">
