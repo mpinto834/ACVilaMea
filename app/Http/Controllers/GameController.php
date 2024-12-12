@@ -59,15 +59,15 @@ class GameController extends Controller
 
     public function calendario()
     {
-        $games = Game::orderBy('date_time', 'desc')->get();
+        $games = Game::all();
 
         $futureGames = $games->filter(function($game) {
             return $game->date_time > now();
-        });
+        })->sortBy('date_time');
 
         $pastGames = $games->filter(function($game) {
             return $game->date_time <= now();
-        });
+        })->sortByDesc('date_time');
 
         return view('calendario', compact('futureGames', 'pastGames'));
     }

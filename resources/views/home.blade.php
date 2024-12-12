@@ -62,7 +62,7 @@
     @if($nextGame)
         <div class="row align-items-center text-center py-3 border rounded bg-light">
             <div class="col-md-4">
-                <img src="{{ asset($nextGame->team1_photo) }}" alt="Logo {{ $nextGame->team1_name }}" style="width: 80px; height: auto;">
+x                <img src="{{ asset('images/AC-VILA-MEA.ico') }}" alt="Logo {{ $nextGame->team1_name }}" style="width: 80px; height: auto;">
                 <div class="mt-2 fs-5 fw-bold">{{ $nextGame->team1_name }}</div>
             </div>
             <div class="col-md-4">
@@ -163,14 +163,14 @@
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $news->title }}</h5>
                                     <p class="card-text">{{ Str::limit($news->content, 100) }}</p>
-                                    <a href="{{ route('noticias.show', $news->slug) }}" class="btn btn-primary">Leia Mais</a>
+                                    <a href="{{ route('noticias.show', $news->slug) }}" class="btn btn-dark">Leia Mais</a>
                                  </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
                 <div class="text-center mt-4">
-                    <a href="{{ route('news.index') }}" class="btn btn-primary">Ver Mais Notícias</a>
+                    <a href="{{ route('news.index') }}" class="btn btn-dark">Ver Mais Notícias</a>
                 </div>
             </div>
         </section>
