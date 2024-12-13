@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loja do Clube</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -12,11 +11,11 @@
     <!-- Cabeçalho -->
     <header class="bg-dark text-white py-3">
         <div class="container d-flex justify-content-between align-items-center">
-        <div class="logo">
-            <a href="/">
-                <img src="images/AC-VILA-MEA.ico" alt="Logo do Clube" style="width: 50px; height: auto;">
-            </a>
-        </div>
+            <div class="logo">
+                <a href="/">
+                    <img src="images/AC-VILA-MEA.ico" alt="Logo do Clube" style="width: 50px; height: auto;">
+                </a>
+            </div>
             <nav>
                 <ul class="nav">
                     <li class="nav-item"><a href="noticias" class="nav-link text-white">Notícias</a></li>
@@ -27,112 +26,118 @@
                 </ul>
             </nav>
             @if(Auth::check())
-            <div class="dropdown">
-                <a class="text-white text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="{{ Auth::user()->profile_photo ? Storage::url(Auth::user()->profile_photo) : 'images/default-avatar.png' }}" alt="Foto de Perfil" 
+                <div class="dropdown">
+                    <a class="text-white text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ Auth::user()->profile_photo ? Storage::url(Auth::user()->profile_photo) : 'images/default-avatar.png' }}" alt="Foto de Perfil" 
                          class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
                     <span class="ms-2">{{ Auth::user()->first_name }}</span>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="dropdown-item">Sair</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-    @else
-        <!-- Usuário não autenticado: Redirecionar para Login -->
-        <a href="/login" class="user-icon fs-4" style="cursor: pointer; text-decoration: none; color: white;">👤</a>
-    @endif
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item">Sair</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            @else
+                <a href="/login" class="user-icon fs-4" style="cursor: pointer; text-decoration: none; color: white;">👤</a>
+            @endif
         </div>
     </header>
 
-    <!-- Loja -->
     <div class="container my-4">
-        <h2 class="text-center mb-4">Loja Oficial</h2>
-
+        <h2 class="text-center mb-4">Loja do Clube</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            <!-- Produto 1 -->
-            <div class="col">
-                <div class="card h-100 border rounded shadow-sm">
-                    <img src="{{ asset('images/produtos/camisola.jpg') }}" class="card-img-top p-3" alt="Camisola Oficial">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-2">Camisola Oficial</h5>
-                        <p class="text-muted">Preço: €35.00</p>
-                        <a href="#" class="btn btn-primary">Comprar</a>
+            @foreach($artigos as $artigo)
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="{{ asset('storage/' . $artigo->imagem) }}" 
+                             class="card-img-top" 
+                             alt="{{ $artigo->nome }}" 
+                             style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ $artigo->nome }}</h5>
+                            <p class="card-text">Preço: {{ number_format($artigo->preco, 2) }}€</p>
+                            <p class="card-text">Stock: {{ $artigo->stock }}</p>
+                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-{{ $artigo->id }}">Comprar</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Produto 2 -->
-            <div class="col">
-                <div class="card h-100 border rounded shadow-sm">
-                    <img src="{{ asset('images/produtos/cachecol.jpg') }}" class="card-img-top p-3" alt="Cachecol do Clube">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-2">Cachecol do Clube</h5>
-                        <p class="text-muted">Preço: €15.00</p>
-                        <a href="#" class="btn btn-primary">Comprar</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Produto 3 -->
-            <div class="col">
-                <div class="card h-100 border rounded shadow-sm">
-                    <img src="{{ asset('images/produtos/boné.jpg') }}" class="card-img-top p-3" alt="Boné Oficial">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-2">Boné Oficial</h5>
-                        <p class="text-muted">Preço: €20.00</p>
-                        <a href="#" class="btn btn-primary">Comprar</a>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
+    </div>
 
-        <div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
-            <!-- Produto 4 -->
-            <div class="col">
-                <div class="card h-100 border rounded shadow-sm">
-                    <img src="{{ asset('images/produtos/bandeira.jpg') }}" class="card-img-top p-3" alt="Bandeira do Clube">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-2">Bandeira do Clube</h5>
-                        <p class="text-muted">Preço: €25.00</p>
-                        <a href="#" class="btn btn-primary">Comprar</a>
+    <!-- Modais -->
+    @foreach($artigos as $artigo)
+    <div class="modal fade" id="modal-{{ $artigo->id }}" tabindex="-1" aria-labelledby="modalLabel-{{ $artigo->id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel-{{ $artigo->id }}">{{ $artigo->nome }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="{{ asset('storage/' . $artigo->imagem) }}" 
+                                 class="img-fluid" 
+                                 alt="{{ $artigo->nome }}">
+                        </div>
+                        <div class="col-md-6">
+                            <h5>{{ $artigo->nome }}</h5>
+                            <p class="fw-bold">Preço: {{ number_format($artigo->preco, 2) }}€</p>
+                            
+                            @if($artigo->tipoArtigo->tem_tamanho)
+                                <div class="mb-3">
+                                    <label for="tamanho-{{ $artigo->id }}" class="form-label">Tamanho:</label>
+                                    <select class="form-select" id="tamanho-{{ $artigo->id }}" required>
+                                        <option value="">Selecione o tamanho</option>
+                                        @php
+                                            $tamanhos_stock = json_decode($artigo->tamanhos_stock, true) ?? [];
+                                        @endphp
+                                        @foreach($tamanhos_stock as $tamanho => $quantidade)
+                                            @if($quantidade > 0)
+                                                <option value="{{ $tamanho }}">{{ $tamanho }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
+
+                            <div class="mb-3">
+                                <label for="quantidade-{{ $artigo->id }}" class="form-label">Quantidade:</label>
+                                <input type="number" class="form-control" id="quantidade-{{ $artigo->id }}" value="1" min="1" max="{{ $artigo->stock }}">
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Produto 5 -->
-            <div class="col">
-                <div class="card h-100 border rounded shadow-sm">
-                    <img src="{{ asset('images/produtos/bola.jpg') }}" class="card-img-top p-3" alt="Bola Personalizada">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-2">Bola Personalizada</h5>
-                        <p class="text-muted">Preço: €30.00</p>
-                        <a href="#" class="btn btn-primary">Comprar</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Produto 6 -->
-            <div class="col">
-                <div class="card h-100 border rounded shadow-sm">
-                    <img src="{{ asset('images/produtos/chaveiro.jpg') }}" class="card-img-top p-3" alt="Chaveiro">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-2">Chaveiro do Clube</h5>
-                        <p class="text-muted">Preço: €5.00</p>
-                        <a href="#" class="btn btn-primary">Comprar</a>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="adicionarAoCarrinho('{{ $artigo->id }}')">Adicionar ao Carrinho</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Rodapé -->
-    <footer class="bg-dark text-white py-3 text-center">
-        <p>&copy; 2024 AC Vila Meã. Todos os direitos reservados.</p>
-    </footer>
+    @endforeach
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    function adicionarAoCarrinho(id) {
+        const quantidade = document.getElementById('quantidade-' + id).value;
+        const tamanho = document.getElementById('tamanho-' + id) ? document.getElementById('tamanho-' + id).value : null;
+        
+        // Aqui você pode adicionar a lógica para adicionar ao carrinho
+        // Por exemplo, fazer uma requisição AJAX para o servidor
+        
+        alert('Produto adicionado ao carrinho!');
+        // Fecha o modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modal-' + id));
+        modal.hide();
+    }
+    </script>
 </body>
 </html>

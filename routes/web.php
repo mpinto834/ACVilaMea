@@ -10,6 +10,9 @@ use App\Http\Controllers\GaleriaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\ArtigoController;
+use App\Http\Controllers\TiposArtigosController;
+use App\Http\Controllers\EquipaController;
 
 // Página inicial
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -93,6 +96,40 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::delete('/games/{game}', [GameController::class, 'destroy'])->name('games.destroy');
     Route::put('/games/{game}', [GameController::class, 'update'])->name('games.update');
 });
+
+// Rotas para gerenciamento de artigos (protegidas por autenticação e middleware admin)
+Route::middleware(['auth', 'isAdmin'])->group(function () {
+    // Lista todos os artigos (view de gerenciamento)
+    Route::get('/gerir-artigos', [ArtigoController::class, 'index'])->name('artigos.index');
+    
+    // Criar novo artigo
+    Route::post('/artigos', [ArtigoController::class, 'store'])->name('artigos.store');
+    
+    // Atualizar artigo existente
+    Route::put('/artigos/{artigo}', [ArtigoController::class, 'update'])->name('artigos.update');
+    
+    // Excluir artigo
+    Route::delete('/artigos/{artigo}', [ArtigoController::class, 'destroy'])->name('artigos.destroy');
+
+    // Rotas para gerenciar os tipos de artigos (criar, editar, excluir tipos como 'Camisola', 'Cachecol', etc.)
+    Route::resource('tipos-artigos', TiposArtigosController::class)->middleware(['auth','isAdmin']);
+
+    // Rotas para gerenciar os artigos da loja (criar, editar, excluir produtos específicos com preços, stocks, etc.)
+    Route::resource('artigos', ArtigoController::class)->middleware(['auth', 'isAdmin']);   
+
+});
+
+    // Rota pública para visualizar a loja
+    Route::get('/loja', [ArtigoController::class, 'loja'])->name('loja');
+
+// Rotas para Gerir Equipas
+Route::middleware(['auth', 'isAdmin'])->group(function () {
+    Route::get('/gerir-equipas', [EquipaController::class, 'index'])->name('equipas.index');
+    Route::post('/equipas', [EquipaController::class, 'store'])->name('equipas.store');
+    Route::put('/equipas/{equipa}', [EquipaController::class, 'update'])->name('equipas.update');
+    Route::delete('/equipas/{equipa}', [EquipaController::class, 'destroy'])->name('equipas.destroy');
+});
+
 
 
 
