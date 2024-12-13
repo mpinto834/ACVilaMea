@@ -111,7 +111,7 @@
                             <div class="d-grid gap-2">
                                 <a href="/gerir-noticias" class="btn btn-outline-primary">Gerir Notícias</a>
                                 <a href="/gerir-plantel" class="btn btn-outline-primary">Gerir Plantel</a>
-                                <a href="/gerir-artigos" class="btn btn-outline-primary">Gerir Artigos</a>
+                                <a href="/add-product" class="btn btn-outline-primary">Gerir Artigos</a>
                                 <a href="/gerir-jogos" class="btn btn-outline-primary">Gerir Jogos</a>
                                 <a href="/gerir-galeria" class="btn btn-outline-primary">Gerir Fotos</a>
                                 <a href="/gerir-utilizadores" class="btn btn-outline-primary">Gerir Utilizadores</a>

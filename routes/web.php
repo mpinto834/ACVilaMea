@@ -13,6 +13,8 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\ArtigoController;
 use App\Http\Controllers\TiposArtigosController;
 use App\Http\Controllers\EquipaController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ProductController;
 
 // Página inicial
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -130,6 +132,19 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::delete('/equipas/{equipa}', [EquipaController::class, 'destroy'])->name('equipas.destroy');
 });
 
+//Rotas para checkout
+Route::get('/checkout', [CheckoutController::class, 'showCheckoutForm'])->name('checkout.form');
+Route::post('/checkout', [CheckoutController::class, 'handleCheckout'])->name('checkout');
+Route::post('/checkout-process', [CheckoutController::class, 'handleCheckout'])->name('checkout.process');
+
+
+// Routes for managing products (admin only)
+Route::middleware(['auth', 'isAdmin'])->group(function () {
+    Route::get('/add-product', function () {
+        return view('add-product');
+    })->name('products.add');
+    Route::post('/products', [ProductController::class, 'createProduct'])->name('products.create');
+});
 
 
 

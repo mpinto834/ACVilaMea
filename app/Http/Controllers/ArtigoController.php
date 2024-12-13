@@ -7,6 +7,10 @@ use App\Models\TipoArtigo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+use Stripe\Stripe;
+use Stripe\Product;
+use Stripe\Price;
+
 class ArtigoController extends Controller
 {
     public function index()
@@ -15,6 +19,8 @@ class ArtigoController extends Controller
         $tipos_artigos = TipoArtigo::all();
         return view('gerir-artigos', compact('artigos', 'tipos_artigos'));
     }
+
+    
 
     public function store(Request $request)
     {
@@ -106,18 +112,17 @@ class ArtigoController extends Controller
 
     public function loja()
     {
-        $artigos = Artigo::with('tipoArtigo')->get()->map(function($artigo) {
-            // Se o artigo tem tamanhos
-            if ($artigo->tipoArtigo->tem_tamanho) {
-                $tamanhos_stock = json_decode($artigo->tamanhos_stock, true) ?? [];
-                $artigo->stock = array_sum($tamanhos_stock); // Soma total do stock
-                $artigo->tamanhos_disponiveis = array_keys($tamanhos_stock); // Tamanhos disponíveis
-                $artigo->stock_por_tamanho = $tamanhos_stock; // Stock por tamanho
-            }
-            // Se não tem tamanhos, o stock já está correto no campo 'stock'
-            return $artigo;
-        });
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        return view('loja', compact('artigos'));
+        // Fetch products from Stripe
+        $products = Product::all();
+
+        // Fetch prices for each product
+        foreach ($products->data as $product) {
+            $prices = Price::all(['product' => $product->id]);
+            $product->price = $prices->data[0]->unit_amount / 100; // Assuming each product has at least one price
+        }
+
+        return view('loja', ['products' => $products->data]);
     }
 } 

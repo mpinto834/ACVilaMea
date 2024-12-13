@@ -6,6 +6,7 @@
     <title>Loja do Clube</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Cabeçalho -->
@@ -23,6 +24,7 @@
                     <li class="nav-item"><a href="loja" class="nav-link text-white">Loja</a></li>
                     <li class="nav-item"><a href="calendario" class="nav-link text-white">Calendário</a></li>
                     <li class="nav-item"><a href="galeria" class="nav-link text-white">Galeria</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#cartModal"><i class="fas fa-shopping-cart"></i> <span id="cart-count" class="badge bg-danger">0</span></a></li>
                 </ul>
             </nav>
             @if(Auth::check())
@@ -49,21 +51,63 @@
         </div>
     </header>
 
+        <!-- Modal do Carrinho -->
+        <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Carrinho de Compras</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="cart-items" class="list-group">
+                        <!-- Items will be dynamically added here -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <a href="{{ route('checkout.form') }}" class="btn btn-primary">Finalizar Compra</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container my-4">
         <h2 class="text-center mb-4">Loja do Clube</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            @foreach($artigos as $artigo)
+            @foreach($products as $product)
                 <div class="col">
-                    <div class="card h-100">
-                        <img src="{{ asset('storage/' . $artigo->imagem) }}" 
-                             class="card-img-top" 
-                             alt="{{ $artigo->nome }}" 
-                             style="height: 200px; object-fit: cover;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">{{ $artigo->nome }}</h5>
-                            <p class="card-text">Preço: {{ number_format($artigo->preco, 2) }}€</p>
-                            <p class="card-text">Stock: {{ $artigo->stock }}</p>
-                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-{{ $artigo->id }}">Comprar</a>
+                    <div class="card mb-4">
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ $product->name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $product->name }}</h5>
+                            <p class="card-text">{{ $product->description }}</p>
+                            <p class="card-text">Preço: {{ $product->price }}</p>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-{{ $product->id }}">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Compra -->
+                <div class="modal fade" id="modal-{{ $product->id }}" tabindex="-1" aria-labelledby="modalLabel-{{ $product->id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalLabel-{{ $product->id }}">{{ $product->name }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img src="https://via.placeholder.com/150" class="img-fluid mb-3" alt="{{ $product->name }}">
+                                <p>{{ $product->description }}</p>
+                                <div class="mb-3">
+                                    <label for="quantidade-{{ $product->id }}" class="form-label">Quantidade</label>
+                                    <input type="number" class="form-control" id="quantidade-{{ $product->id }}" value="1" min="1">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                <button type="button" class="btn btn-primary" onclick="adicionarAoCarrinho('{{ $product->id }}')">Adicionar ao Carrinho</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,73 +115,49 @@
         </div>
     </div>
 
-    <!-- Modais -->
-    @foreach($artigos as $artigo)
-    <div class="modal fade" id="modal-{{ $artigo->id }}" tabindex="-1" aria-labelledby="modalLabel-{{ $artigo->id }}" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel-{{ $artigo->id }}">{{ $artigo->nome }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="{{ asset('storage/' . $artigo->imagem) }}" 
-                                 class="img-fluid" 
-                                 alt="{{ $artigo->nome }}">
-                        </div>
-                        <div class="col-md-6">
-                            <h5>{{ $artigo->nome }}</h5>
-                            <p class="fw-bold">Preço: {{ number_format($artigo->preco, 2) }}€</p>
-                            
-                            @if($artigo->tipoArtigo->tem_tamanho)
-                                <div class="mb-3">
-                                    <label for="tamanho-{{ $artigo->id }}" class="form-label">Tamanho:</label>
-                                    <select class="form-select" id="tamanho-{{ $artigo->id }}" required>
-                                        <option value="">Selecione o tamanho</option>
-                                        @php
-                                            $tamanhos_stock = json_decode($artigo->tamanhos_stock, true) ?? [];
-                                        @endphp
-                                        @foreach($tamanhos_stock as $tamanho => $quantidade)
-                                            @if($quantidade > 0)
-                                                <option value="{{ $tamanho }}">{{ $tamanho }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endif
-
-                            <div class="mb-3">
-                                <label for="quantidade-{{ $artigo->id }}" class="form-label">Quantidade:</label>
-                                <input type="number" class="form-control" id="quantidade-{{ $artigo->id }}" value="1" min="1" max="{{ $artigo->stock }}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" onclick="adicionarAoCarrinho('{{ $artigo->id }}')">Adicionar ao Carrinho</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endforeach
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
     function adicionarAoCarrinho(id) {
         const quantidade = document.getElementById('quantidade-' + id).value;
-        const tamanho = document.getElementById('tamanho-' + id) ? document.getElementById('tamanho-' + id).value : null;
-        
-        // Aqui você pode adicionar a lógica para adicionar ao carrinho
-        // Por exemplo, fazer uma requisição AJAX para o servidor
-        
+        const produto = {
+            id: id,
+            quantidade: quantidade
+        };
+
+        // Adiciona o produto ao carrinho
+        cart.push(produto);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        updateCartModal();
+
         alert('Produto adicionado ao carrinho!');
         // Fecha o modal
         const modal = bootstrap.Modal.getInstance(document.getElementById('modal-' + id));
         modal.hide();
     }
+
+    function updateCartCount() {
+        document.getElementById('cart-count').innerText = cart.length;
+    }
+
+    function updateCartModal() {
+        const cartItems = document.getElementById('cart-items');
+        cartItems.innerHTML = '';
+        cart.forEach(item => {
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.innerText = `Produto ID: ${item.id}, Quantidade: ${item.quantidade}`;
+            cartItems.appendChild(listItem);
+        });
+    }
+
+    // Atualiza o carrinho ao carregar a página
+    document.addEventListener('DOMContentLoaded', () => {
+        updateCartCount();
+        updateCartModal();
+    });
     </script>
 </body>
 </html>
