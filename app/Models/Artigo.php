@@ -9,5 +9,16 @@ class Artigo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nome', 'stock', 'preco', 'imagem'];
+    protected $fillable = [
+        'nome',
+        'preco',
+        'imagem',
+        'tipo_artigo_id',
+        'tamanhos_stock'
+    ];
+
+    public function tipoArtigo()
+    {
+        return $this->belongsTo(TipoArtigo::class, 'tipo_artigo_id');
+    }
 } 

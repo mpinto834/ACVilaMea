@@ -2,87 +2,122 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Artigo;
+use App\Models\TipoArtigo;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ArtigoController extends Controller
 {
-    // Lista todos os artigos
     public function index()
     {
         $artigos = Artigo::all();
-        return view('gerir-artigos', compact('artigos'));
+        $tipos_artigos = TipoArtigo::all();
+        return view('gerir-artigos', compact('artigos', 'tipos_artigos'));
     }
 
-    // Armazena um novo artigo
     public function store(Request $request)
     {
-        $request->validate([
-            'nome' => 'required|string|max:255',
-            'stock' => 'required|integer|min:0',
-            'preco' => 'required|numeric|min:0',
-            'imagem' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
         $artigo = new Artigo();
         $artigo->nome = $request->nome;
-        $artigo->stock = $request->stock;
+        $artigo->tipo_artigo_id = $request->tipo_artigo_id;
         $artigo->preco = $request->preco;
+        
+        // Verifica se o tipo de artigo tem tamanhos
+        $tipoArtigo = TipoArtigo::find($request->tipo_artigo_id);
+        
+        if ($tipoArtigo->tem_tamanho) {
+            // Lógica para artigos com tamanhos
+            $tamanhos_stock = [];
+            foreach ($request->tamanhos ?? [] as $tamanho) {
+                $tamanhos_stock[$tamanho] = $request->quantidade[$tamanho];
+            }
+            $artigo->tamanhos_stock = json_encode($tamanhos_stock);
+            $artigo->stock = array_sum($tamanhos_stock);
+        } else {
+            // Lógica para artigos sem tamanhos
+            $artigo->stock = $request->stock;
+            $artigo->tamanhos_stock = null;
+        }
 
+        // Processa a imagem
         if ($request->hasFile('imagem')) {
-            $path = $request->file('imagem')->store('artigos', 'public');
-            $artigo->imagem = $path;
+            $artigo->imagem = $request->file('imagem')->store('artigos', 'public');
         }
 
         $artigo->save();
 
-        return redirect()->route('artigos.index')->with('success', 'Artigo criado com sucesso!');
+        return redirect()->back()->with('success', 'Artigo adicionado com sucesso!');
     }
 
-    // Atualiza um artigo existente
     public function update(Request $request, Artigo $artigo)
     {
         $request->validate([
             'nome' => 'required|string|max:255',
-            'stock' => 'required|integer|min:0',
             'preco' => 'required|numeric|min:0',
-            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'imagem' => 'nullable|image|max:2048',
         ]);
 
+        // Primeiro, atualize os dados básicos
         $artigo->nome = $request->nome;
-        $artigo->stock = $request->stock;
         $artigo->preco = $request->preco;
 
+        // Verifica se o tipo de artigo tem tamanhos
+        if ($artigo->tipoArtigo->tem_tamanho) {
+            // Lógica para artigos com tamanhos
+            $tamanhos_stock = [];
+            if ($request->tamanhos) {
+                foreach ($request->tamanhos as $tamanho) {
+                    if (isset($request->quantidade[$tamanho])) {
+                        $tamanhos_stock[$tamanho] = (int) $request->quantidade[$tamanho];
+                    }
+                }
+            }
+            $artigo->tamanhos_stock = json_encode($tamanhos_stock);
+            $artigo->stock = array_sum($tamanhos_stock);
+        } else {
+            // Lógica para artigos sem tamanhos
+            $artigo->stock = (int) $request->stock;
+            $artigo->tamanhos_stock = null;
+        }
+
+        // Processa a imagem se uma nova for enviada
         if ($request->hasFile('imagem')) {
             if ($artigo->imagem) {
                 Storage::disk('public')->delete($artigo->imagem);
             }
-            
-            $path = $request->file('imagem')->store('artigos', 'public');
-            $artigo->imagem = $path;
+            $artigo->imagem = $request->file('imagem')->store('artigos', 'public');
         }
 
         $artigo->save();
 
-        return redirect()->route('artigos.index')->with('success', 'Artigo atualizado com sucesso!');
+        return redirect()->back()->with('success', 'Artigo atualizado com sucesso!');
     }
 
-    // Exclui um artigo
     public function destroy(Artigo $artigo)
     {
         if ($artigo->imagem) {
-            Storage::delete(str_replace('/storage', 'public', $artigo->imagem));
+            Storage::disk('public')->delete($artigo->imagem);
         }
+        
         $artigo->delete();
-
-        return redirect()->route('artigos.index')->with('success', 'Artigo excluído com sucesso!');
+        return redirect()->back()->with('success', 'Artigo excluído com sucesso!');
     }
 
-    // Exibe a loja
     public function loja()
     {
-        $artigos = Artigo::all();
+        $artigos = Artigo::with('tipoArtigo')->get()->map(function($artigo) {
+            // Se o artigo tem tamanhos
+            if ($artigo->tipoArtigo->tem_tamanho) {
+                $tamanhos_stock = json_decode($artigo->tamanhos_stock, true) ?? [];
+                $artigo->stock = array_sum($tamanhos_stock); // Soma total do stock
+                $artigo->tamanhos_disponiveis = array_keys($tamanhos_stock); // Tamanhos disponíveis
+                $artigo->stock_por_tamanho = $tamanhos_stock; // Stock por tamanho
+            }
+            // Se não tem tamanhos, o stock já está correto no campo 'stock'
+            return $artigo;
+        });
+
         return view('loja', compact('artigos'));
     }
 } 

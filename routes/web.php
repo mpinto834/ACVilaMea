@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\ArtigoController;
+use App\Http\Controllers\TiposArtigosController;
 
 // Página inicial
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -108,10 +109,18 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     
     // Excluir artigo
     Route::delete('/artigos/{artigo}', [ArtigoController::class, 'destroy'])->name('artigos.destroy');
+
+    // Rotas para gerenciar os tipos de artigos (criar, editar, excluir tipos como 'Camisola', 'Cachecol', etc.)
+    Route::resource('tipos-artigos', TiposArtigosController::class)->middleware(['auth','isAdmin']);
+
+    // Rotas para gerenciar os artigos da loja (criar, editar, excluir produtos específicos com preços, stocks, etc.)
+    Route::resource('artigos', ArtigoController::class)->middleware(['auth', 'isAdmin']);   
+
 });
 
-// Rota pública para visualizar a loja
-Route::get('/loja', [ArtigoController::class, 'loja'])->name('loja');
+    // Rota pública para visualizar a loja
+    Route::get('/loja', [ArtigoController::class, 'loja'])->name('loja');
+
 
 
 

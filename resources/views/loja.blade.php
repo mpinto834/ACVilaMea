@@ -63,7 +63,7 @@
                             <h5 class="card-title">{{ $artigo->nome }}</h5>
                             <p class="card-text">Preço: {{ number_format($artigo->preco, 2) }}€</p>
                             <p class="card-text">Stock: {{ $artigo->stock }}</p>
-                            <a href="#" class="btn btn-primary">Comprar</a>
+                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-{{ $artigo->id }}">Comprar</a>
                         </div>
                     </div>
                 </div>
@@ -71,6 +71,73 @@
         </div>
     </div>
 
+    <!-- Modais -->
+    @foreach($artigos as $artigo)
+    <div class="modal fade" id="modal-{{ $artigo->id }}" tabindex="-1" aria-labelledby="modalLabel-{{ $artigo->id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel-{{ $artigo->id }}">{{ $artigo->nome }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="{{ asset('storage/' . $artigo->imagem) }}" 
+                                 class="img-fluid" 
+                                 alt="{{ $artigo->nome }}">
+                        </div>
+                        <div class="col-md-6">
+                            <h5>{{ $artigo->nome }}</h5>
+                            <p class="fw-bold">Preço: {{ number_format($artigo->preco, 2) }}€</p>
+                            
+                            @if($artigo->tipoArtigo->tem_tamanho)
+                                <div class="mb-3">
+                                    <label for="tamanho-{{ $artigo->id }}" class="form-label">Tamanho:</label>
+                                    <select class="form-select" id="tamanho-{{ $artigo->id }}" required>
+                                        <option value="">Selecione o tamanho</option>
+                                        @php
+                                            $tamanhos_stock = json_decode($artigo->tamanhos_stock, true) ?? [];
+                                        @endphp
+                                        @foreach($tamanhos_stock as $tamanho => $quantidade)
+                                            @if($quantidade > 0)
+                                                <option value="{{ $tamanho }}">{{ $tamanho }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
+
+                            <div class="mb-3">
+                                <label for="quantidade-{{ $artigo->id }}" class="form-label">Quantidade:</label>
+                                <input type="number" class="form-control" id="quantidade-{{ $artigo->id }}" value="1" min="1" max="{{ $artigo->stock }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="adicionarAoCarrinho('{{ $artigo->id }}')">Adicionar ao Carrinho</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    function adicionarAoCarrinho(id) {
+        const quantidade = document.getElementById('quantidade-' + id).value;
+        const tamanho = document.getElementById('tamanho-' + id) ? document.getElementById('tamanho-' + id).value : null;
+        
+        // Aqui você pode adicionar a lógica para adicionar ao carrinho
+        // Por exemplo, fazer uma requisição AJAX para o servidor
+        
+        alert('Produto adicionado ao carrinho!');
+        // Fecha o modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modal-' + id));
+        modal.hide();
+    }
+    </script>
 </body>
 </html>

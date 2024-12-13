@@ -11,9 +11,11 @@ class CreateArtigosTable extends Migration
         Schema::create('artigos', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->integer('stock');
+            $table->integer('stock')->default(0);
             $table->decimal('preco', 8, 2);
-            $table->string('imagem')->nullable();
+            $table->string('imagem');
+            $table->foreignId('tipo_artigo_id')->constrained('tipos_artigos');
+            $table->json('tamanhos_stock')->nullable();
             $table->timestamps();
         });
     }
