@@ -113,41 +113,15 @@
                 <section class="ranking mb-4">
                     <h2 class="text-center">Hyundai Pro League</h2>
                     <ul class="list-group">
-                        <li class="list-group-item d-flex align-items-center px-3">
-                            <div class="d-flex align-items-center me-auto">
-                                <img src="images/AC-VILA-MEA.ico" alt="AC Vila Mea" class="img-fluid" style="width: 30px; height: auto;">
-                                <div class="ms-2">AC Vila Mea</div>
-                            </div>
-                            <span class="fw-bold">21</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center px-3">
-                            <div class="d-flex align-items-center me-auto">
-                                <img src="benfica_logo.png" alt="Benfica" class="img-fluid" style="width: 30px; height: auto;">
-                                <div class="ms-2">Benfica</div>
-                            </div>
-                            <span class="fw-bold">21</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center px-3">
-                            <div class="d-flex align-items-center me-auto">
-                                <img src="sporting_logo.png" alt="Sporting" class="img-fluid" style="width: 30px; height: auto;">
-                                <div class="ms-2">Sporting</div>
-                            </div>
-                            <span class="fw-bold">21</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center px-3">
-                            <div class="d-flex align-items-center me-auto">
-                                <img src="braga_logo.png" alt="Braga" class="img-fluid" style="width: 30px; height: auto;">
-                                <div class="ms-2">Braga</div>
-                            </div>
-                            <span class="fw-bold">21</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center px-3">
-                            <div class="d-flex align-items-center me-auto">
-                                <img src="guimaraes_logo.png" alt="Guimarães" class="img-fluid" style="width: 30px; height: auto;">
-                                <div class="ms-2">Guimarães</div>
-                            </div>
-                            <span class="fw-bold">21</span>
-                        </li>
+                        @foreach($equipas as $equipa)
+                            <li class="list-group-item d-flex align-items-center px-3">
+                                <div class="d-flex align-items-center me-auto">
+                                    <img src="{{ Storage::url($equipa->logo) }}" alt="{{ $equipa->nome }}" class="img-fluid" style="width: 30px; height: auto;">
+                                    <div class="ms-2">{{ $equipa->nome }}</div>
+                                </div>
+                                <span class="fw-bold">{{ $equipa->pontos }}</span>
+                            </li>
+                        @endforeach
                     </ul>
                 </section>
             </div>

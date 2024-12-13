@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\ArtigoController;
 use App\Http\Controllers\TiposArtigosController;
+use App\Http\Controllers\EquipaController;
 
 // Página inicial
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -120,6 +121,14 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
     // Rota pública para visualizar a loja
     Route::get('/loja', [ArtigoController::class, 'loja'])->name('loja');
+
+// Rotas para Gerir Equipas
+Route::middleware(['auth', 'isAdmin'])->group(function () {
+    Route::get('/gerir-equipas', [EquipaController::class, 'index'])->name('equipas.index');
+    Route::post('/equipas', [EquipaController::class, 'store'])->name('equipas.store');
+    Route::put('/equipas/{equipa}', [EquipaController::class, 'update'])->name('equipas.update');
+    Route::delete('/equipas/{equipa}', [EquipaController::class, 'destroy'])->name('equipas.destroy');
+});
 
 
 
