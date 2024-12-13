@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+import os
+import json
 
 def extrair_dados_liga_pro(url):
     headers = {
@@ -17,43 +19,46 @@ def extrair_dados_liga_pro(url):
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
             
-            # Encontrar todas as tabelas e pegar a segunda
             tabelas = soup.find_all('table', {'class': 'zztable'})
+            print(f"Número de tabelas encontradas: {len(tabelas)}")  
+            
+            equipes = []
             if len(tabelas) > 1:
-                tabela = tabelas[1]  # Pegar a segunda tabela
-                
+                tabela = tabelas[1]  #segunda tabela
                 print("\nClassificação:")
                 print("Equipe | Pontos")
                 print("-" * 30)
                 
                 # Extrair dados das equipes
-                for tr in tabela.find_all('tr')[1:]:  # Pular o cabeçalho
+                for tr in tabela.find_all('tr')[1:]:  
                     colunas = tr.find_all('td')
                     if colunas:
-                        nome_equipe = colunas[2].text.strip()  # Ajuste conforme necessário
-                        pontos = colunas[3].text.strip()  # Ajuste conforme necessário
+                        nome_equipe = colunas[2].text.strip() 
+                        pontos = int(colunas[3].text.strip())
                         print(f"{nome_equipe} | {pontos}")
+                        equipes.append({'nome': nome_equipe, 'pontos': pontos})
                 
-                return True
+                return json.dumps(equipes)  # Retorna como JSON
             else:
                 print("Tabela de classificação não encontrada!")
-                return None
+                return json.dumps([])  # Retorna JSON vazio
             
         else:
             print(f"Erro ao acessar a página. Status code: {response.status_code}")
-            return None
+            return json.dumps([])
             
     except requests.RequestException as e:
         print(f"Erro ao acessar a página: {e}")
-        return None
+        return json.dumps([])  # Retorna JSON vazio
 
 def main():
-    # Colque aqui o URL exato da página que contém a tabela de classificação
-    url = "https://www.zerozero.pt/competicao/af-porto-divisao-liga-pro-2383"  # Substitua esta linha com o URL correto
+    url = "https://www.zerozero.pt/competicao/af-porto-divisao-liga-pro-2383" 
     print("Iniciando extração de dados...")
     dados = extrair_dados_liga_pro(url)
 
-    input("\nPressione Enter para sair...")
+
+    # Certifica-se de imprimir apenas os dados JSON para que o PHP possa capturá-los
+    print(dados)
 
 if __name__ == "__main__":
     main()
