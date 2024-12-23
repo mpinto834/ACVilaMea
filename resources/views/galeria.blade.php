@@ -6,6 +6,7 @@
     <title>Galeria - Site Esportivo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Cabeçalho -->
@@ -23,6 +24,7 @@
                     <li class="nav-item"><a href="loja" class="nav-link text-white">Loja</a></li>
                     <li class="nav-item"><a href="calendario" class="nav-link text-white">Calendário</a></li>
                     <li class="nav-item"><a href="galeria" class="nav-link text-white">Galeria</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#cartModal"><i class="fas fa-shopping-cart"></i> <span id="cart-count" class="badge bg-danger">0</span></a></li>
                 </ul>
             </nav>
             @if(Auth::check())
@@ -50,6 +52,27 @@
         </div>
     </header>
 
+    <!-- Modal do Carrinho -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Carrinho de Compras</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="cart-items" class="list-group">
+                        <!-- Items will be dynamically added here -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <a href="{{ route('checkout.form') }}" class="btn btn-primary">Finalizar Compra</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container my-4">
         <h2 class="text-center mb-4">Galeria de Fotos</h2>
 
@@ -71,5 +94,48 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+
+    function adicionarAoCarrinho(id) {
+        const quantidade = document.getElementById('quantidade-' + id).value;
+        const produto = {
+            id: id,
+            quantidade: quantidade
+        };
+
+        // Adiciona o produto ao carrinho
+        cart.push(produto);
+        sessionStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        updateCartModal();
+
+        alert('Produto adicionado ao carrinho!');
+        // Fecha o modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modal-' + id));
+        modal.hide();
+    }
+
+    function updateCartCount() {
+        document.getElementById('cart-count').innerText = cart.length;
+    }
+
+    function updateCartModal() {
+        const cartItems = document.getElementById('cart-items');
+        cartItems.innerHTML = '';
+        cart.forEach(item => {
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.innerText = `Produto ID: ${item.id}, Quantidade: ${item.quantidade}`;
+            cartItems.appendChild(listItem);
+        });
+    }
+
+    // Atualiza o carrinho ao carregar a página
+    document.addEventListener('DOMContentLoaded', () => {
+        updateCartCount();
+        updateCartModal();
+    });
+    </script>
 </body>
 </html>

@@ -117,7 +117,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 
     function adicionarAoCarrinho(id) {
         const quantidade = document.getElementById('quantidade-' + id).value;
@@ -128,7 +128,7 @@
 
         // Adiciona o produto ao carrinho
         cart.push(produto);
-        localStorage.setItem('cart', JSON.stringify(cart));
+        sessionStorage.setItem('cart', JSON.stringify(cart));
         updateCartCount();
         updateCartModal();
 
