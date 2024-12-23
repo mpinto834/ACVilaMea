@@ -82,7 +82,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">{{ $product->description }}</p>
-                            <p class="card-text">Preço: {{ $product->price }}</p>
+                            <p class="card-text">Preço: €{{ number_format($product->price, 2) }}</p>
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-{{ $product->id }}">Comprar</button>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                                <button type="button" class="btn btn-primary" onclick="adicionarAoCarrinho('{{ $product->id }}')">Adicionar ao Carrinho</button>
+                                <button type="button" class="btn btn-primary" onclick="adicionarAoCarrinho('{{ $product->id }}', '{{ $product->name }}', '{{ $product->price }}')">Adicionar ao Carrinho</button>
                             </div>
                         </div>
                     </div>
@@ -119,11 +119,13 @@
     <script>
     let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 
-    function adicionarAoCarrinho(id) {
+    function adicionarAoCarrinho(id, name, price) {
         const quantidade = document.getElementById('quantidade-' + id).value;
         const produto = {
             id: id,
-            quantidade: quantidade
+            name: name,
+            quantidade: quantidade,
+            price : price
         };
 
         // Adiciona o produto ao carrinho
@@ -148,7 +150,7 @@
         cart.forEach(item => {
             const listItem = document.createElement('li');
             listItem.className = 'list-group-item';
-            listItem.innerText = `Produto ID: ${item.id}, Quantidade: ${item.quantidade}`;
+            listItem.innerText = `Produto: ${item.name}, Quantidade: ${item.quantidade}, Preço: €${item.price}`;
             cartItems.appendChild(listItem);
         });
     }

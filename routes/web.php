@@ -133,9 +133,11 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 });
 
 //Rotas para checkout
-Route::get('/checkout', [CheckoutController::class, 'showCheckoutForm'])->name('checkout.form');
-Route::post('/checkout', [CheckoutController::class, 'handleCheckout'])->name('checkout');
-Route::post('/checkout-process', [CheckoutController::class, 'handleCheckout'])->name('checkout.process');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'showCheckoutForm'])->name('checkout.form');
+    Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('checkout.process');
+    Route::post('/checkout-process', [CheckoutController::class, 'handleCheckout'])->name('checkout.process');
+});
 
 
 // Routes for managing products (admin only)
