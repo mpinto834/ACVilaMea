@@ -1,3 +1,8 @@
+<!-- intl-tel-input CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+<!-- intl-tel-input JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -13,10 +18,10 @@
     @include('layouts.header')
     @include('layouts.cartmodal')
 
-    <!-- Registro Container -->
+    <!-- Registo Container -->
     <div class="container">
         <div class="register-container">
-            <h2>Registro</h2>
+            <h2>Registo</h2>
             <form action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
@@ -59,7 +64,7 @@
     <!-- Data de Nascimento -->
     <div class="mb-3">
         <label for="birthDate" class="form-label">Data de Nascimento</label>
-        <input type="date" class="form-control" id="birthDate" name="birth_date" value="{{ old('birth_date') }}">
+        <input type="date" class="form-control" id="birthDate" name="birth_date" value="{{ old('birth_date') }}" required>
         @error('birth_date')
             <div class="text-danger">{{ $message }}</div>
         @enderror
@@ -68,7 +73,7 @@
     <!-- Número de Telefone -->
     <div class="mb-3">
         <label for="phone" class="form-label">Número de Telefone</label>
-        <input type="tel" class="form-control" id="phone" name="phone_number" placeholder="Seu número de telefone" value="{{ old('phone_number') }}">
+        <input type="tel" class="form-control" id="phone" name="phone_number" placeholder="Seu número de telefone" value="{{ old('phone_number') }}" required>
         @error('phone_number')
             <div class="text-danger">{{ $message }}</div>
         @enderror
@@ -95,19 +100,42 @@
     <!-- Foto de Perfil -->
                 <div class="mb-3">
                     <label for="profile_photo" class="form-label">Foto de Perfil</label>
-                    <input type="file" class="form-control" id="profile_photo" name="profile_photo" accept="image/*">
+                    <input type="file" class="form-control" id="profile_photo" name="profile_photo" accept="image/*" required>
                     @error('profile_photo')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
 
-    <!-- Botão de Registro -->
-    <button type="submit" class="btn btn-primary w-100">Registrar</button>
+    <!-- Botão de Registo -->
+    <button type="submit" class="btn btn-primary w-100">Registar</button>
     <p class="text-center text-muted mt-3">Já tem uma conta? <a href="/login">Faça login aqui</a></p>
 </form>
         </div>
     </div>
 
     @include('layouts.storescript')
+<script>
+    // Inicializa do intl-tel-input no campo com ID "phone"
+    const phoneInput = document.querySelector("#phone");
+    const iti = window.intlTelInput(phoneInput, {
+        initialCountry: "auto", 
+        geoIpLookup: function(callback) {
+            fetch('https://ipapi.co/country/') 
+                .then((res) => res.text())
+                .then((countryCode) => callback(countryCode))
+                .catch(() => callback("pt")); 
+        },
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js", 
+    });
+
+    phoneInput.addEventListener("blur", () => {
+        const isValid = iti.isValidNumber(); 
+        if (isValid) {
+            phoneInput.value = iti.getNumber(); 
+        } else {
+            alert("Por favor, insira um número de telefone válido.");
+        }
+    });
+</script>
 </body>
 </html>

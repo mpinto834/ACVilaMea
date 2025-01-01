@@ -19,10 +19,10 @@ class RegisterController extends Controller
             'last_name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
-            'phone_number' => 'nullable|string|max:15',
-            'birth_date' => 'nullable|date',
+            'phone_number' => 'required|string|min:10|max:15',
+            'birth_date' => 'required|date',
             'password' => 'required|string|min:8|confirmed',
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validação para a foto
+            'profile_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Validação para a foto
         ]);
 
         if ($validator->fails()) {
