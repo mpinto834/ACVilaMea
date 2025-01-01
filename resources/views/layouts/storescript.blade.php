@@ -3,7 +3,7 @@
     let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 
     function adicionarAoCarrinho(id, name, price) {
-        const quantidade = document.getElementById('quantidade-' + id).value;
+        const quantidade = parseInt(document.getElementById('quantidade-' + id).value);
         const produto = {
             id: id,
             name: name,
@@ -11,8 +11,15 @@
             price : price
         };
 
-        // Adiciona o produto ao carrinho
+        // Check if the product already exists in the cart
+    const existingProductIndex = cart.findIndex(item => item.id === id);
+    if (existingProductIndex !== -1) {
+        // Update the quantity and total price of the existing product
+        cart[existingProductIndex].quantidade += quantidade;
+    } else {
+        // Add the new product to the cart
         cart.push(produto);
+    }
         sessionStorage.setItem('cart', JSON.stringify(cart));
         updateCartCount();
         updateCartModal();
@@ -23,20 +30,31 @@
         modal.hide();
     }
 
+    function removeFromCart(index) {
+    cart.splice(index, 1);
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    updateCartModal();
+    }
+
     function updateCartCount() {
         document.getElementById('cart-count').innerText = cart.length;
     }
 
     function updateCartModal() {
-        const cartItems = document.getElementById('cart-items');
-        cartItems.innerHTML = '';
-        cart.forEach(item => {
-            const listItem = document.createElement('li');
-            listItem.className = 'list-group-item';
-            listItem.innerText = `Produto: ${item.name}, Quantidade: ${item.quantidade}, Preço: €${item.price}`;
-            cartItems.appendChild(listItem);
-        });
-    }
+    const cartItems = document.getElementById('cart-items');
+    cartItems.innerHTML = '';
+    cart.forEach((item, index) => {
+        const totalPrice = item.price * item.quantidade;
+        const listItem = document.createElement('li');
+        listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+        listItem.innerHTML = `
+            Produto: ${item.name}, Quantidade: ${item.quantidade}, Preço: €${totalPrice.toFixed(2)}
+            <button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})">Remover</button>
+        `;
+        cartItems.appendChild(listItem);
+    });
+}
 
     // Atualiza o carrinho ao carregar a página
     document.addEventListener('DOMContentLoaded', () => {

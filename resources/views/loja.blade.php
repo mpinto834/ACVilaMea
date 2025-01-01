@@ -18,7 +18,7 @@
             @foreach($products as $product)
                 <div class="col">
                     <div class="card mb-4">
-                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ $product->name }}">
+                    <img src="{{ $product->metadata->image_url ?? 'https://via.placeholder.com/150' }}" class="card-img-top" alt="{{ $product->name }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">{{ $product->description }}</p>
@@ -37,7 +37,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <img src="https://via.placeholder.com/150" class="img-fluid mb-3" alt="{{ $product->name }}">
+                                <img src="{{ $product->metadata->image_url ?? 'https://via.placeholder.com/150' }}" class="card-img-top" alt="{{ $product->name }}">
                                 <p>{{ $product->description }}</p>
                                 <div class="mb-3">
                                     <label for="quantidade-{{ $product->id }}" class="form-label">Quantidade</label>
