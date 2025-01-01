@@ -1,33 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-@include('layouts.header')
+    @include('layouts.header')
+    @include('layouts.cartmodal')
 
-
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Checkout</h1>
-
+    <div class="container my-4">
+        <h2 class="text-center mb-4">Checkout</h2>
         <div class="row">
             <div class="col-md-8">
                 <h4>Produtos no Carrinho</h4>
-                <ul id="cart-items" class="list-group mb-4">
+                <ul id="checkout-cart-items" class="list-group mb-4">
                     <!-- Items will be dynamically added here -->
                 </ul>
-                <h4>Total: <span id="cart-total">0</span> €</h4>
+                <h4>Total: <span id="checkout-cart-total">0</span> €</h4>
             </div>
             <div class="col-md-4">
                 <h4>Informações de Pagamento</h4>
                 <form action="{{ route('checkout.process') }}" method="POST" id="payment-form">
                     @csrf
                     <input type="hidden" name="cart" id="cart-input">
+                    <input type="hidden" name="amount" id="amount-input">
+                    <input type="hidden" name="payment_method" id="payment-method">
                     <div class="mb-3">
                         <label for="card-holder-name" class="form-label">Nome no Cartão</label>
                         <input id="card-holder-name" type="text" class="form-control" required>
@@ -44,6 +45,9 @@
         </div>
     </div>
 
+    @include('layouts.storescript')
+
+
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         const stripe = Stripe('{{ env('STRIPE_KEY') }}');
@@ -59,7 +63,7 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const { setupIntent, error } = await stripe.confirmCardSetup(
+            const { paymentIntent, error } = await stripe.confirmCardPayment(
                 clientSecret, {
                     payment_method: {
                         card: cardElement,
@@ -70,34 +74,19 @@
 
             if (error) {
                 // Display error.message in your UI.
+                console.error(error.message);
                 alert(error.message);
-            } else {
-                // The card has been verified successfully...
-                document.getElementById('cart-input').value = localStorage.getItem('cart');
+            } else if (paymentIntent.status === 'succeeded') {
+                // The payment has been processed successfully.
+                document.getElementById('payment-method').value = paymentIntent.payment_method;
                 form.submit();
             }
         });
 
-        // Load cart items from local storage
+        // Update the amount input field with the total amount
         document.addEventListener('DOMContentLoaded', () => {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const cartItems = document.getElementById('cart-items');
-            const cartTotal = document.getElementById('cart-total');
-            let total = 0;
-
-            cart.forEach(item => {
-                const listItem = document.createElement('li');
-                listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
-                listItem.innerText = `Produto ID: ${item.id}, Quantidade: ${item.quantidade}, Tamanho: ${item.tamanho}`;
-                const price = 20; // Replace with actual price
-                total += price * item.quantidade;
-                const priceSpan = document.createElement('span');
-                priceSpan.innerText = `${price * item.quantidade} €`;
-                listItem.appendChild(priceSpan);
-                cartItems.appendChild(listItem);
-            });
-
-            cartTotal.innerText = total.toFixed(2);
+            const totalAmount = document.getElementById('checkout-cart-total').innerText;
+            document.getElementById('amount-input').value = parseFloat(totalAmount) * 100; // Convert to cents
         });
     </script>
 </body>

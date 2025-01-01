@@ -36,7 +36,7 @@ Route::get('/register', function() {
 });
 Route::post('/register', [RegisterController::class, 'store'])->name('register');
 
-// Rotas do dashboard e perfil (requere login)
+// Rotas do dashboard e perfil (requer login)
 Route::middleware('auth')->group(function () {
     // Rota para o dashboard
     Route::get('/dashboard', function () {
@@ -72,7 +72,6 @@ Route::post('/plantel', [PlantelController::class, 'store'])->name('plantel.stor
 Route::put('/plantel/{jogador}', [PlantelController::class, 'update'])->name('plantel.update');
 Route::delete('/plantel/{jogador}', [PlantelController::class, 'destroy'])->name('plantel.destroy');
 });
-
 
 // Rotas protegidas para administrar a galeria
 Route::middleware(['auth', 'isAdmin'])->group(function () {
@@ -110,8 +109,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'showCheckoutForm'])->name('checkout.form');
     Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('checkout.process');
     Route::post('/checkout-process', [CheckoutController::class, 'handleCheckout'])->name('checkout.process');
+    Route::get('/checkout/success', [CheckoutController::class, 'checkoutSuccess'])->name('checkout.success');
 });
-
 
 // Routes for managing products (admin only)
 Route::middleware(['auth', 'isAdmin'])->group(function () {
