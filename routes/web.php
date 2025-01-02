@@ -21,7 +21,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/plantel', [PlantelController::class, 'show'])->name('plantel.show');
 Route::view('/noticias', 'noticias');
 Route::get('/loja', [ProductController::class, 'loja'])->name('loja');
-Route::get('/galeria', action: [GaleriaController::class, 'show'])->name('galeria.show');
+Route::get('/galeria', [GaleriaController::class, 'show'])->name('galeria.show');
 Route::get('/calendario', [GameController::class, 'calendario'])->name('calendario');
 
 

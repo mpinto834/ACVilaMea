@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     @include('layouts.header')
@@ -41,12 +42,23 @@
                                 <p>{{ $product->description }}</p>
                                 <div class="mb-3">
                                     <label for="quantidade-{{ $product->id }}" class="form-label">Quantidade</label>
-                                    <input type="number" class="form-control" id="quantidade-{{ $product->id }}" value="1" min="1">
+                                    <input type="number" 
+                                           class="form-control" 
+                                           id="quantidade-{{ $product->id }}" 
+                                           value="1" 
+                                           min="1"
+                                           step="1"
+                                           pattern="\d*"
+                                           inputmode="numeric"
+                                           onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109"
+                                    >
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                                <button type="button" class="btn btn-primary" onclick="adicionarAoCarrinho('{{ $product->id }}', '{{ $product->name }}', '{{ $product->price }}')">Adicionar ao Carrinho</button>
+                                <button type="button" class="btn btn-primary" onclick="adicionarAoCarrinho('{{ $product->id }}', '{{ $product->name }}', '{{ $product->price }}')">
+                                    Adicionar ao Carrinho
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -56,5 +68,9 @@
     </div>
 
     @include('layouts.storescript')
+    @section('scripts')
+        <script src="{{ asset('js/quantity.js') }}"></script>
+        <script src="{{ asset('js/cart.js') }}"></script>
+    @endsection
 </body>
 </html>

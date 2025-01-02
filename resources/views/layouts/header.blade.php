@@ -3,7 +3,7 @@
         <div class="container d-flex justify-content-between align-items-center">
         <div class="logo">
             <a href="/">
-                <img src="images/AC-VILA-MEA.ico" alt="Logo do Clube" style="width: 50px; height: auto;">
+                <img src="{{asset('images/AC-VILA-MEA.ico')}}" alt="Logo do Clube" style="width: 50px; height: auto;">
             </a>
         </div>
             <nav>

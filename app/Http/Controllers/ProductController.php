@@ -31,13 +31,16 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'price' => 'required|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+            'price' => 'required|numeric|min:0.01',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         try {
+            // Força a quantidade mínima como 1
+            $quantity = max(1, intval($request->quantity));
+
             // Handle image upload
             $imageUrl = null;
             if ($request->hasFile('image')) {
@@ -51,13 +54,14 @@ class ProductController extends Controller
                 'description' => $request->description,
                 'metadata' => [
                     'image_url' => $imageUrl,
+                    'quantity' => $quantity,
                 ],
             ]);
 
             // Create a price for the product
             $price = StripePrice::create([
                 'product' => $product->id,
-                'unit_amount' => $request->price * 100, // Amount in cents
+                'unit_amount' => max(1, $request->price * 100),
                 'currency' => 'eur',
             ]);
 
