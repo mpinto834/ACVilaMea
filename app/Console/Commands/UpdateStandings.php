@@ -12,7 +12,9 @@ class UpdateStandings extends Command
 
     public function handle()
     {
-        $output = shell_exec('python3 crawler.py');
+        $pythonScriptPath = base_path('crawler.py');
+        $command = escapeshellcmd("python $pythonScriptPath");
+        $output = shell_exec($command);
 
         // Adiciona um log para verificar a saída bruta
         echo "Saída do script Python: $output\n";
