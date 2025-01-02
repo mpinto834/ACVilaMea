@@ -13,6 +13,15 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\EquipaController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
+use App\Mail\VerifyAccountMail;
+use App\Mail\ResetPasswordMail;
+use App\Mail\InvoiceMail;
+use Illuminate\Support\Facades\Mail;
+use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 
 // Página inicial
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -118,6 +127,94 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::post('/products', [ProductController::class, 'createProduct'])->name('products.create');
     Route::delete('/products/{id}', [ProductController::class, 'deleteProduct'])->name('products.delete');
 });
+
+// Rotas para verificação de email
+Route::get('/verify-email/{token}', function($token) {
+    $user = User::where('email_verification_token', $token)->first();
+    
+    if (!$user) {
+        return redirect('/login')->with('error', 'Link de verificação inválido.');
+    }
+
+    $user->email_verified_at = now();
+    $user->email_verification_token = null;
+    $user->save();
+
+    return redirect('/login')->with('success', 'Email verificado com sucesso! Agora você pode fazer login.');
+})->name('verification.verify');
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+// Rotas para reset de senha
+Route::get('/password/reset', function () {
+    return view('auth.forgot-password');
+})->name('password.request');
+
+Route::post('/password/email', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
+    $user = User::where('email', $request->email)->first();
+    
+    if ($user) {
+        $token = Str::random(60);
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $request->email],
+            [
+                'token' => Hash::make($token),
+                'created_at' => now()
+            ]
+        );
+        
+        Mail::send('emails.reset-password', [
+            'token' => $token,
+            'email' => $request->email
+        ], function($message) use ($request) {
+            $message->to($request->email);
+            $message->subject('Redefinição de Senha');
+        });
+    }
+    
+    return back()->with('status', 'Se encontrarmos um usuário com esse email, enviaremos um link de recuperação de senha.');
+})->name('password.email');
+
+// Rota para mostrar o formulário de reset
+Route::get('/password/reset/{token}', function ($token, Request $request) {
+    return view('auth.reset-password', [
+        'token' => $token,
+        'email' => $request->email
+    ]);
+})->name('password.reset');
+
+// Rota para processar o reset de senha
+Route::post('/password/update', function (Request $request) {
+    $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|min:8|confirmed'
+    ]);
+
+    $passwordReset = DB::table('password_reset_tokens')
+        ->where('email', $request->email)
+        ->first();
+
+    if (!$passwordReset || !Hash::check($request->token, $passwordReset->token)) {
+        return back()->withErrors(['email' => 'Token inválido ou expirado.']);
+    }
+
+    $user = User::where('email', $request->email)->first();
+    
+    if (!$user) {
+        return back()->withErrors(['email' => 'Não encontramos um usuário com esse endereço de e-mail.']);
+    }
+
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
+    return redirect('/login')->with('status', 'Sua senha foi redefinida com sucesso!');
+})->name('password.update');
 
 
 

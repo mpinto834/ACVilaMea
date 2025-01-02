@@ -6,14 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\VerifyAccountMail;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
     public function store(Request $request)
     {
-        // Validação dos campos, incluindo a foto de perfil
+        // Validação dos campos
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -22,21 +25,23 @@ class RegisterController extends Controller
             'phone_number' => 'required|string|min:10|max:15',
             'birth_date' => 'required|date',
             'password' => 'required|string|min:8|confirmed',
-            'profile_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Validação para a foto
+            'profile_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-        // Verifica se foi enviado um arquivo de foto de perfil
+        // Processa a foto de perfil
         $profilePhotoPath = null;
         if ($request->hasFile('profile_photo')) {
-            // Armazena a foto na pasta "profile-photos" dentro do diretório público
             $profilePhotoPath = $request->file('profile_photo')->store('profile-photos', 'public');
         }
 
-        // Criação do usuário
+        // Gera token de verificação
+        $verificationToken = Str::random(64);
+
+        // Cria o usuário
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -45,13 +50,18 @@ class RegisterController extends Controller
             'phone_number' => $request->phone_number,
             'birth_date' => $request->birth_date,
             'password' => Hash::make($request->password),
-            'profile_photo' => $profilePhotoPath, // Salva o caminho da foto de perfil no banco de dados
+            'profile_photo' => $profilePhotoPath,
+            'email_verification_token' => $verificationToken,
+            'email_verified_at' => null,
         ]);
 
-        // Autentica o usuário após o registro
-        \Illuminate\Support\Facades\Auth::login($user);
+        // Gera URL de verificação
+        $verificationUrl = url("/verify-email/{$verificationToken}");
 
-        // Redireciona para a página de login com uma mensagem de sucesso
-        return redirect('/login')->with('success', 'Conta criada com sucesso!');
+        // Envia o email de verificação
+        Mail::to($user->email)->send(new VerifyAccountMail($verificationUrl, $user->first_name));
+
+        // Redireciona com mensagem
+        return redirect('/login')->with('success', 'Conta criada com sucesso! Por favor, verifique seu email para ativar sua conta.');
     }
 }

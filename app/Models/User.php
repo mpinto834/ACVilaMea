@@ -29,6 +29,7 @@ class User extends Authenticatable
         'birth_date',
         'phone_number',
         'profile_photo',
+        'email_verification_token',
     ];
 
     /**

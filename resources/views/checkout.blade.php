@@ -73,11 +73,10 @@
             );
 
             if (error) {
-                // Display error.message in your UI.
                 console.error(error.message);
                 alert(error.message);
             } else if (paymentIntent.status === 'succeeded') {
-                // The payment has been processed successfully.
+                document.getElementById('cart-input').value = JSON.stringify(cart);
                 document.getElementById('payment-method').value = paymentIntent.payment_method;
                 form.submit();
             }

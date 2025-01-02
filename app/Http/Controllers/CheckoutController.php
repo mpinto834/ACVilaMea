@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
+use App\Mail\InvoiceMail;
+use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CheckoutController extends Controller
 {
@@ -45,8 +48,37 @@ class CheckoutController extends Controller
                 'payment_intent_client_secret' => $paymentIntent->client_secret
             ]);
         } else if ($paymentIntent->status == 'succeeded') {
-            // The payment didn’t need any additional actions and completed!
-            // Handle post-payment fulfillment
+            // Decodificar os produtos do carrinho
+            $cartData = json_decode($request->cart, true);
+            
+            $products = collect($cartData)->map(function ($item) {
+                return (object) [
+                    'name' => $item['name'],
+                    'quantity' => $item['quantidade'], // Note que usamos 'quantidade' aqui
+                    'price' => $item['price']
+                ];
+            });
+
+            try {
+                $pdf = PDF::loadView('emails.invoice-pdf', [
+                    'user' => auth()->user(),
+                    'products' => $products,
+                    'total' => $amount / 100,
+                ]);
+
+                Mail::to(auth()->user()->email)->send(new InvoiceMail(
+                    $paymentIntent,
+                    auth()->user(),
+                    $products,
+                    $amount / 100,
+                    $pdf->output()
+                ));
+
+            } catch (\Exception $e) {
+                \Log::error('Erro ao gerar PDF ou enviar email: ' . $e->getMessage());
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
+
             return redirect()->route('checkout.success');
         } else {
             // Invalid status
