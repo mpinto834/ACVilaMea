@@ -24,7 +24,7 @@
                 <div class="card mb-3">
                     <div class="card-header bg-primary text-white">
                         <div class="d-flex justify-content-between align-items-center">
-                            <span>Pedido #{{ $order->id }}</span>
+                            <span>Pedido</span>
                             <span>Data: {{ $order->created_at->format('d/m/Y H:i') }}</span>
                         </div>
                     </div>
