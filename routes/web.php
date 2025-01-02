@@ -22,6 +22,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use App\Http\Controllers\OrderController;
 
 // Página inicial
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -215,6 +216,9 @@ Route::post('/password/update', function (Request $request) {
 
     return redirect('/login')->with('status', 'Sua senha foi redefinida com sucesso!');
 })->name('password.update');
+
+// Rotas para Minhas Compras
+Route::get('/minhas-compras', [OrderController::class, 'userOrders'])->name('user.orders')->middleware('auth');
 
 
 

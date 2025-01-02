@@ -81,6 +81,20 @@
                                 <a href="/gerir-galeria" class="btn btn-outline-primary">Gerir Fotos</a>
                                 <a href="/gerir-utilizadores" class="btn btn-outline-primary">Gerir Utilizadores</a>
                                 <a href="/gerir-equipas" class="btn btn-outline-primary">Gerir Standings</a>
+                                <a href="{{ route('user.orders') }}" class="btn btn-outline-primary">
+                                    <i class="fas fa-shopping-bag me-2"></i>Minhas Compras
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Menu do Utilizador</h5>
+                            <div class="d-grid gap-2">
+                                <a href="{{ route('user.orders') }}" class="btn btn-outline-primary">
+                                    <i class="fas fa-shopping-bag me-2"></i>Minhas Compras
+                                </a>
                             </div>
                         </div>
                     </div>

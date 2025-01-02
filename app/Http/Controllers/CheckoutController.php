@@ -7,6 +7,7 @@ use Stripe\PaymentIntent;
 use App\Mail\InvoiceMail;
 use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Order;
 
 class CheckoutController extends Controller
 {
@@ -51,6 +52,15 @@ class CheckoutController extends Controller
             // Decodificar os produtos do carrinho
             $cartData = json_decode($request->cart, true);
             
+            // Criar a ordem no banco de dados
+            $order = Order::create([
+                'user_id' => auth()->id(),
+                'products' => $request->cart, // Salva os produtos como JSON
+                'amount' => $amount, // Este é o valor em centavos
+                'payment_method' => $request->payment_method,
+                'status' => 'completed'
+            ]);
+
             $products = collect($cartData)->map(function ($item) {
                 return (object) [
                     'name' => $item['name'],
