@@ -27,9 +27,9 @@ class CheckoutController extends Controller
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $amount = $request->amount; // Amount in cents
+        $amount = $request->amount;
 
-        if ($amount < 50) { // Ensure the amount meets the minimum requirement
+        if ($amount < 50) {
             return response()->json(['error' => 'The amount must be at least 50 cents.']);
         }
 
@@ -39,7 +39,7 @@ class CheckoutController extends Controller
             'payment_method' => 'pm_card_visa',
             'confirmation_method' => 'manual',
             'confirm' => true,
-            'return_url' => route('checkout.success'), // Provide a return URL
+            'return_url' => route('checkout.success'),
         ]);
 
         if ($paymentIntent->status == 'requires_action' &&
@@ -49,14 +49,12 @@ class CheckoutController extends Controller
                 'payment_intent_client_secret' => $paymentIntent->client_secret
             ]);
         } else if ($paymentIntent->status == 'succeeded') {
-            // Decodificar os produtos do carrinho
             $cartData = json_decode($request->cart, true);
             
-            // Criar a ordem no banco de dados
             $order = Order::create([
                 'user_id' => auth()->id(),
-                'products' => $request->cart, // Salva os produtos como JSON
-                'amount' => $amount, // Este é o valor em centavos
+                'products' => $request->cart,
+                'amount' => $amount,
                 'payment_method' => $request->payment_method,
                 'status' => 'completed'
             ]);
@@ -64,7 +62,7 @@ class CheckoutController extends Controller
             $products = collect($cartData)->map(function ($item) {
                 return (object) [
                     'name' => $item['name'],
-                    'quantity' => $item['quantidade'], // Note que usamos 'quantidade' aqui
+                    'quantity' => $item['quantidade'],
                     'price' => $item['price']
                 ];
             });
@@ -91,7 +89,6 @@ class CheckoutController extends Controller
 
             return redirect()->route('checkout.success');
         } else {
-            // Invalid status
             return response()->json(['error' => 'Invalid PaymentIntent status']);
         }
     }

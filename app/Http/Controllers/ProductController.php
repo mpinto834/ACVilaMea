@@ -14,10 +14,8 @@ class ProductController extends Controller
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        // Fetch products from Stripe
         $products = StripeProduct::all(['active' => true]);
 
-        // Fetch prices for each product
         foreach ($products->data as $product) {
             $prices = StripePrice::all(['product' => $product->id, 'active' => true]);
             $product->price = $prices->data[0]->unit_amount / 100; // Assuming each product has at least one price
@@ -38,18 +36,15 @@ class ProductController extends Controller
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         try {
-            // Força a quantidade mínima como 1
             $quantity = max(1, intval($request->quantity));
 
-            // Handle image upload
             $imageUrl = null;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('products', 'public');
                 $imageUrl = Storage::url($imagePath);
             }
 
-            // Create a product
-            $product = StripeProduct::create([
++            $product = StripeProduct::create([
                 'name' => $request->name,
                 'description' => $request->description,
                 'metadata' => [
@@ -58,7 +53,6 @@ class ProductController extends Controller
                 ],
             ]);
 
-            // Create a price for the product
             $price = StripePrice::create([
                 'product' => $product->id,
                 'unit_amount' => max(1, $request->price * 100),
@@ -78,7 +72,6 @@ class ProductController extends Controller
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        // Fetch the list of products from Stripe
         $products = StripeProduct::all(['limit' => 10]);
 
         return view('add-product', compact('products'));
@@ -89,20 +82,16 @@ class ProductController extends Controller
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         try {
-            // Retrieve the product
             $product = StripeProduct::retrieve($id);
 
-            // Retrieve all associated prices
             $prices = StripePrice::all(['product' => $id]);
 
-            // Deactivate the prices
             foreach ($prices->data as $price) {
                 StripePrice::update($price->id, [
                     'active' => false,
                 ]);
             }
 
-            // Archive the product (Stripe recommends this instead of deletion)
             StripeProduct::update($id, [
                 'active' => false,
             ]);
