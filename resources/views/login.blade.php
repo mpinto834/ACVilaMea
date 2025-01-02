@@ -54,6 +54,7 @@
 
     <!-- Link para registro -->
     <p class="text-center text-muted mt-3">Não tem conta? <a href="/register">Registre-se aqui</a></p>
+    <p class="text-center text-muted mt-3">Esqueceu sua senha? <a href="/password/reset">Recuperar senha</a></p>
 </form>
         </div>
     </div>

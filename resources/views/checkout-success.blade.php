@@ -21,5 +21,12 @@
     </div>
 
     @include('layouts.storescript')
+
+    <script>
+        // Limpar o carrinho após compra bem-sucedida
+        sessionStorage.removeItem('cart');
+        cart = [];
+        updateCartCount();
+    </script>
 </body>
 </html>
