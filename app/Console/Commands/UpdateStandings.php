@@ -14,9 +14,6 @@ class UpdateStandings extends Command
     {
         $pythonScriptPath = base_path('crawler.py');
         $command = escapeshellcmd("python $pythonScriptPath");
-        $output = shell_exec($command);
-        $pythonScriptPath = base_path('crawler.py');
-        $output = escapeshellcmd("python3 $pythonScriptPath");
         $output = shell_exec($output);
 
 
