@@ -1,7 +1,7 @@
 # AC Vila Meã - Plataforma de Gestão Desportiva
 
 <p align="center">
-  <img src="[inserir_url_do_logo]" alt="AC Vila Meã Logo" width="200"/>
+  <img src="https://www.zerozero.pt/img/logos/equipas/6292_imgbank_1683212429.png" alt="AC Vila Meã Logo" width="200"/>
 </p>
 
 ## Sobre o Projeto
@@ -12,7 +12,7 @@ AC Vila Meã é uma plataforma web completa que combina um site institucional co
 
 - **Gestão de Conteúdo**
   - Sistema de notícias e atualizações
-  - Galeria multimídia (fotos e vídeos)
+  - Galeria multimídia
   - Gestão de plantel e jogos
 
 - **E-commerce**
@@ -23,8 +23,6 @@ AC Vila Meã é uma plataforma web completa que combina um site institucional co
 
 - **Área Administrativa**
   - Gestão de utilizadores
-  - Controle de stock
-  - Relatórios e análises
 
 ## Tecnologias Utilizadas
 
