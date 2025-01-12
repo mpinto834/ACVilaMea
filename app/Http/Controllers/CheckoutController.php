@@ -16,7 +16,7 @@ class CheckoutController extends Controller
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $intent = PaymentIntent::create([
-            'amount' => 1099, // Example amount in cents
+            'amount' => 50, // Example amount in cents
             'currency' => 'eur',
         ]); 
 
