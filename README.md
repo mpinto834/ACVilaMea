@@ -1,7 +1,7 @@
 # AC Vila Meã - Plataforma de Gestão Desportiva
 
 <p align="center">
-  <img src="[inserir_url_do_logo]" alt="AC Vila Meã Logo" width="200"/>
+  <img src="https://afporto.pt/clubes/vila-mea/" alt="AC Vila Meã Logo" width="200"/>
 </p>
 
 ## Sobre o Projeto
