@@ -69,6 +69,8 @@ class GameController extends Controller
     {
         if ($game->team2_photo && $game->team2_photo !== 'images/AC-VILA-MEA.ico') {
             Storage::disk('public')->delete($game->team2_photo);
+        }else{
+            Storage::disk('public')->delete($game->team1_photo);
         }
         
         $game->delete();

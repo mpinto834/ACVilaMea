@@ -112,7 +112,7 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                             </div>
                                             <form action="{{ route('noticias.update', $noticia->id) }}" 
-                                                  method="POST" 
+                                                  method="POST"     
                                                   enctype="multipart/form-data">
                                                 @csrf
                                                 @method('PUT')

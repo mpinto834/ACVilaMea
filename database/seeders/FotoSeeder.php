@@ -13,15 +13,15 @@ class FotoSeeder extends Seeder
         Foto::truncate();
         $fotos = [
             [
-                'imagem' => 'galeria/foto1.jpg',
+                'imagem' => 'images/campo.png',
                 'legenda' => 'Treino da Equipe'
             ],
             [
-                'imagem' => 'galeria/foto2.jpg',
+                'imagem' => 'images/campo.png',
                 'legenda' => 'Último Jogo'
             ],
             [
-                'imagem' => 'galeria/foto3.jpg',
+                'imagem' => 'images/campo.png',
                 'legenda' => 'Evento com Adeptos'
             ],
         ];

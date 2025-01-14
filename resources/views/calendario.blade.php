@@ -71,7 +71,7 @@
                 </div>
             @endforeach
         @else
-            <p class="text-center">Não há jogos anteriores registrados.</p>
+            <p class="text-center">Não há jogos anteriores registados.</p>
         @endif
     </div>
 

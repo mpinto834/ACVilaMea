@@ -44,7 +44,7 @@ class ProductController extends Controller
                 $imageUrl = Storage::url($imagePath);
             }
 
-+            $product = StripeProduct::create([
+           $product = StripeProduct::create([
                 'name' => $request->name,
                 'description' => $request->description,
                 'metadata' => [
