@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TicketController;
 
 // Página inicial
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -219,6 +220,9 @@ Route::post('/password/update', function (Request $request) {
 
 Route::post('/orders', [OrderController::class, 'store']);
 Route::get('/minhas-compras', [OrderController::class, 'userOrders'])->name('user.orders')->middleware('auth');
+
+Route::get('/tickets-purchase-{game_id}', [TicketController::class, 'showPurchaseForm'])->name('tickets.purchase');
+Route::post('/tickets-purchase', [TicketController::class, 'handlePurchase'])->name('tickets.handlePurchase');
 
 
 

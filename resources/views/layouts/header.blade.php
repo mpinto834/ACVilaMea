@@ -8,11 +8,11 @@
         </div>
             <nav>
                 <ul class="nav">
-                    <li class="nav-item"><a href="noticias" class="nav-link text-white">Notícias</a></li>
-                    <li class="nav-item"><a href="plantel" class="nav-link text-white">Plantel</a></li>
-                    <li class="nav-item"><a href="loja" class="nav-link text-white">Loja</a></li>
-                    <li class="nav-item"><a href="calendario" class="nav-link text-white">Calendário</a></li>
-                    <li class="nav-item"><a href="galeria" class="nav-link text-white">Galeria</a></li>
+                    <li class="nav-item"><a href="/noticias" class="nav-link text-white">Notícias</a></li>
+                    <li class="nav-item"><a href="/plantel" class="nav-link text-white">Plantel</a></li>
+                    <li class="nav-item"><a href="/loja" class="nav-link text-white">Loja</a></li>
+                    <li class="nav-item"><a href="/calendario" class="nav-link text-white">Calendário</a></li>
+                    <li class="nav-item"><a href="/galeria" class="nav-link text-white">Galeria</a></li>
                     <li class="nav-item"><a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#cartModal"><i class="fas fa-shopping-cart"></i> <span id="cart-count" class="badge bg-danger">0</span></a></li>
                 </ul>
             </nav>

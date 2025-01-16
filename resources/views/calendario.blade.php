@@ -30,11 +30,15 @@
                                 <div class="mb-2 fs-5">{{ $game->date_time->format('d/m/Y') }}</div>
                                 <div class="mb-2 fs-5">{{ $game->date_time->format('H:i') }}</div>
                                 <div><i class="fas fa-map-marker-alt"></i> {{ $game->location }}</div>
+                                <div class="mb-2 fs-5">
+                                    <a href="{{ route('tickets.purchase', ['game_id' => $game->id]) }}" class="btn btn-primary">Comprar Bilhetes</a>
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <img src="{{ asset($game->team2_photo) }}" alt="Logo {{ $game->team2_name }}" style="width: 60px; height: auto;">
                                 <div class="mt-2 fw-bold">{{ $game->team2_name }}</div>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
