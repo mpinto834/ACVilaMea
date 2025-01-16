@@ -18,17 +18,21 @@
             <div class="col-md-8">
                 <h4>Produtos no Carrinho</h4>
                 <ul id="checkout-cart-items" class="list-group mb-4">
-                    <!-- Items will be dynamically added here -->
+                    @foreach ($cart as $item)
+                        <li class="list-group-item">
+                            {{ $item['name'] }} - {{ $item['quantity'] }} x €{{ $item['price'] }}
+                        </li>
+                    @endforeach
                 </ul>
-                <h4>Total: <span id="checkout-cart-total">0</span> €</h4>
+                <h4>Total: <span id="checkout-cart-total">{{ $total }}</span> €</h4>
             </div>
             <div class="col-md-4">
                 <h4>Informações de Pagamento</h4>
                 <form action="{{ route('checkout.process') }}" method="POST" id="payment-form">
                     @csrf
-                    <input type="hidden" name="cart" id="cart-input">
-                    <input type="hidden" name="amount" id="amount-input">
-                    <input type="hidden" name="payment_method" id="payment-method">
+                    <input type="hidden" name="cart" id="cart-input" value="{{ json_encode($cart) }}">
+                    <input type="hidden" name="amount" id="amount-input" value="{{ $amountInCents }}">
+                    <input type="hidden" name="stripeToken" id="stripeToken">
                     <div class="mb-3">
                         <label for="card-holder-name" class="form-label">Nome no Cartão</label>
                         <input id="card-holder-name" type="text" class="form-control" required>
@@ -37,7 +41,7 @@
                         <label for="card-element" class="form-label">Cartão de Crédito ou Débito</label>
                         <div id="card-element" class="form-control"></div>
                     </div>
-                    <button id="card-button" class="btn btn-primary mt-3" data-secret="{{ $intent->client_secret }}">
+                    <button id="card-button" class="btn btn-primary mt-3">
                         Pagar
                     </button>
                 </form>
@@ -46,7 +50,6 @@
     </div>
 
     @include('layouts.storescript')
-
 
     <script src="https://js.stripe.com/v3/"></script>
     <script>
@@ -58,30 +61,26 @@
         const form = document.getElementById('payment-form');
         const cardHolderName = document.getElementById('card-holder-name');
         const cardButton = document.getElementById('card-button');
-        const clientSecret = cardButton.dataset.secret;
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const { paymentIntent, error } = await stripe.confirmCardPayment(
-                clientSecret, {
-                    payment_method: {
-                        card: cardElement,
-                        billing_details: { name: cardHolderName.value }
-                    }
-                }
-            );
+            // Disable the button to prevent multiple submissions
+            cardButton.disabled = true;
+
+            const { token, error } = await stripe.createToken(cardElement, {
+                name: cardHolderName.value,
+            });
 
             if (error) {
                 console.error(error.message);
                 alert(error.message);
-            } else if (paymentIntent.status === 'succeeded') {
-                document.getElementById('cart-input').value = JSON.stringify(cart);
-                document.getElementById('payment-method').value = paymentIntent.payment_method;
+                cardButton.disabled = false; // Re-enable the button on error
+            } else {
+                document.getElementById('stripeToken').value = token.id;
                 form.submit();
             }
         });
-
         // Update the amount input field with the total amount
         document.addEventListener('DOMContentLoaded', () => {
             const totalAmount = document.getElementById('checkout-cart-total').innerText;
