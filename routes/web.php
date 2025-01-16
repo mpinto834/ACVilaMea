@@ -190,34 +190,40 @@ Route::get('/password/reset/{token}', function ($token, Request $request) {
 // Rota para processar o reset de senha
 Route::post('/password/update', function (Request $request) {
     $request->validate([
-        'token' => 'required',
-        'email' => 'required|email',
+        'token' => 'required', 
+        'email' => 'required|email', 
         'password' => 'required|min:8|confirmed'
     ]);
 
+    // Procura o registro correspondente na tabela 'password_reset_tokens' pelo e-mail fornecido
     $passwordReset = DB::table('password_reset_tokens')
-        ->where('email', $request->email)
-        ->first();
+        ->where('email', $request->email) 
+        ->first(); 
 
+    // Verifica se o registo existe e se o token enviado é válido
     if (!$passwordReset || !Hash::check($request->token, $passwordReset->token)) {
         return back()->withErrors(['email' => 'Token inválido ou expirado.']);
     }
 
+    // Procura o usuário pelo e-mail fornecido
     $user = User::where('email', $request->email)->first();
-    
+
     if (!$user) {
         return back()->withErrors(['email' => 'Não encontramos um usuário com esse endereço de e-mail.']);
     }
 
-    $user->password = Hash::make($request->password);
-    $user->save();
+    // Atualiza a senha do usuário com a nova senha fornecida
+    $user->password = Hash::make($request->password); 
+    $user->save(); 
 
+    // Delete token
     DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
-    return redirect('/login')->with('status', 'Sua senha foi redefinida com sucesso!');
-})->name('password.update');
 
-// Rotas para Minhas Compras
+    return redirect('/login')->with('status', 'Sua senha foi redefinida com sucesso!');
+})->name('password.update'); // Dá um nome à rota como 'password.update'
+
+
 Route::get('/minhas-compras', [OrderController::class, 'userOrders'])->name('user.orders')->middleware('auth');
 
 

@@ -14,7 +14,7 @@ class UpdateStandings extends Command
     {
         $pythonScriptPath = base_path('crawler.py');
         $command = escapeshellcmd("python $pythonScriptPath");
-        $output = shell_exec($command);
+        $output = shell_exec($output);
 
 
         // Adiciona um log para verificar a saída bruta
@@ -30,7 +30,7 @@ class UpdateStandings extends Command
         if (json_last_error() === JSON_ERROR_NONE && is_array($equipes)) {
             foreach ($equipes as $equipe) {
                 // Log para verificar cada equipe
-                echo "Atualizando equipe: " . $equipe['nome'] . " com pontos: " . $equipe['pontos'] . "\n";
+                echo "Atualizando equipa: " . $equipe['nome'] . " com pontos: " . $equipe['pontos'] . "\n";
 
                 Equipa::updateOrCreate(
                     ['nome' => $equipe['nome']],

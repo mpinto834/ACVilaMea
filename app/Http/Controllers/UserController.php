@@ -11,7 +11,6 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    /**Mostra a lista de utilizadores*/
   public function index()
 {
     $users = User::all();
@@ -20,23 +19,19 @@ class UserController extends Controller
 
 public function updateRole(Request $request, User $user)
 {
-    // Verifica se o usuário atual é admin
     if (Auth::user()->role !== 2) {
         return back()->with('error', 'Não tem permissão para realizar esta ação');
     }
 
-    // Verifica se não está tentando alterar o próprio papel
     if (Auth::id() === $user->id) {
         return back()->with('error', 'Não é possível alterar sua própria função');
     }
 
-    // Valida o input
     $request->validate([
         'role' => 'required|in:0,1,2'
     ]);
 
     try {
-        // Atualiza o papel do usuário
         $user->role = $request->input('role');
         $user->save();
 
@@ -47,12 +42,10 @@ public function updateRole(Request $request, User $user)
 }
 public function destroy(User $user)
 {
-    // Verifica se o usuário atual é admin
     if (Auth::user()->role !== 2) {
         return back()->with('error', 'Não tem permissão para realizar esta ação');
     }
 
-    // Verifica se não está tentando excluir a si mesmo
     if (Auth::id() === $user->id) {
         return back()->with('error', 'Não é possível excluir a si mesmo');
     }

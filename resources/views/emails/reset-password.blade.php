@@ -16,7 +16,7 @@
 </head>
 <body>
     <h2>Olá!</h2>
-    <p>Você está recebendo este email porque recebemos uma solicitação de redefinição de senha para sua conta.</p>
+    <p>Está a receber este email porque recebemos uma solicitação de redefinição de senha para sua conta.</p>
     
     <a href="{{ route('password.reset', ['token' => $token, 'email' => $email]) }}" class="button">
         Redefinir Senha
