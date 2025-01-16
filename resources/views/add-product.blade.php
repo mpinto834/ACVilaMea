@@ -54,8 +54,8 @@
                 <input type="number" class="form-control" id="price" name="price" required>
             </div>
             <div class="mb-3">
-                <label for="image" class="form-label">Imagem do Artigo (opcional)</label>
-                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                <label for="image" class="form-label">Imagem do Artigo </label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
             </div>
             <button type="submit" class="btn btn-primary">Criar Artigo</button>
         </form>
