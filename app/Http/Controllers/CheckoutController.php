@@ -18,7 +18,6 @@ class CheckoutController extends Controller
 
         $intent = PaymentIntent::create([
             'amount' => 50, // Example amount in cents
-<<<<<<< HEAD
             'currency' => 'eur',
         ]);
 
@@ -112,8 +111,6 @@ class CheckoutController extends Controller
 
         $intent = PaymentIntent::create([
             'amount' => 1099, // Example amount in cents
-=======
->>>>>>> 85f177e5df9cbe710eba768ab87d642fbecad6ab
             'currency' => 'eur',
         ]); 
 

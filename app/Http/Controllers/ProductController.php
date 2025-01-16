@@ -7,6 +7,8 @@ use Stripe\Product as StripeProduct;
 use Stripe\Price as StripePrice;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use App\Models\Artigo;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {

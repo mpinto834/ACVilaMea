@@ -13,12 +13,8 @@ class Artigo extends Model
         'nome',
         'preco',
         'imagem',
-        'tipo_artigo_id',
-        'tamanhos_stock'
+        'descricao'
     ];
 
-    public function tipoArtigo()
-    {
-        return $this->belongsTo(TipoArtigo::class, 'tipo_artigo_id');
-    }
-} 
+
+}

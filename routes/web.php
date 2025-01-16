@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\ProfileController; 
+use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\NewsController;
-use App\Http\Controllers\PlantelController; 
+use App\Http\Controllers\PlantelController;
 use App\Http\Controllers\GaleriaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
@@ -29,10 +29,14 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Páginas públicas (não requerem autenticação)
 Route::get('/plantel', [PlantelController::class, 'show'])->name('plantel.show');
-Route::view('/noticias', 'noticias');
+//Route::view('/noticias', 'noticias');
 Route::get('/loja', [ProductController::class, 'loja'])->name('loja');
 Route::get('/galeria', [GaleriaController::class, 'show'])->name('galeria.show');
 Route::get('/calendario', [GameController::class, 'calendario'])->name('calendario');
+
+// Rota para as notícias
+Route::get('/noticias', [NewsController::class, 'index'])->name('news.index');
+Route::get('/noticias/{id}', [NewsController::class, 'show'])->name('noticias.show');
 
 
 // Páginas de autenticação
@@ -40,7 +44,7 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Páginas de registro
+// Páginas de registo
 Route::get('/register', function() {
     return view('register');
 });
@@ -63,9 +67,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.photo.update');
 });
 
-// Rota para as notícias
-Route::get('/noticias', [NewsController::class, 'index'])->name('news.index');
-Route::get('/noticias/{slug}', [NewsController::class, 'show'])->name('noticias.show');
 
 // Rotas protegidas para administradores
 Route::middleware(['auth', 'isAdmin'])->group(function () {
@@ -117,7 +118,6 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 //Rotas para checkout
 Route::middleware(['auth'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'showCheckoutForm'])->name('checkout.form');
-    Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('checkout.process');
     Route::post('/checkout-process', [CheckoutController::class, 'handleCheckout'])->name('checkout.process');
     Route::get('/checkout/success', [CheckoutController::class, 'checkoutSuccess'])->name('checkout.success');
 });
@@ -126,13 +126,13 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/add-product', [ProductController::class, 'showAddProductForm'])->name('products.add');
     Route::post('/products', [ProductController::class, 'createProduct'])->name('products.create');
-    Route::delete('/products/{id}', [ProductController::class, 'deleteProduct'])->name('products.delete');
+    Route::delete('/products/{produto}', [ProductController::class, 'deleteProduct'])->name('products.delete');
 });
 
 // Rotas para verificação de email
 Route::get('/verify-email/{token}', function($token) {
     $user = User::where('email_verification_token', $token)->first();
-    
+
     if (!$user) {
         return redirect('/login')->with('error', 'Link de verificação inválido.');
     }
@@ -156,7 +156,7 @@ Route::get('/password/reset', function () {
 Route::post('/password/email', function (Request $request) {
     $request->validate(['email' => 'required|email']);
     $user = User::where('email', $request->email)->first();
-    
+
     if ($user) {
         $token = Str::random(60);
         DB::table('password_reset_tokens')->updateOrInsert(
@@ -166,7 +166,7 @@ Route::post('/password/email', function (Request $request) {
                 'created_at' => now()
             ]
         );
-        
+
         Mail::send('emails.reset-password', [
             'token' => $token,
             'email' => $request->email
@@ -175,7 +175,7 @@ Route::post('/password/email', function (Request $request) {
             $message->subject('Redefinição de Senha');
         });
     }
-    
+
     return back()->with('status', 'Se encontrarmos um usuário com esse email, enviaremos um link de recuperação de senha.');
 })->name('password.email');
 
@@ -190,40 +190,34 @@ Route::get('/password/reset/{token}', function ($token, Request $request) {
 // Rota para processar o reset de senha
 Route::post('/password/update', function (Request $request) {
     $request->validate([
-        'token' => 'required', 
-        'email' => 'required|email', 
+        'token' => 'required',
+        'email' => 'required|email',
         'password' => 'required|min:8|confirmed'
     ]);
 
-    // Procura o registro correspondente na tabela 'password_reset_tokens' pelo e-mail fornecido
     $passwordReset = DB::table('password_reset_tokens')
-        ->where('email', $request->email) 
-        ->first(); 
+        ->where('email', $request->email)
+        ->first();
 
-    // Verifica se o registo existe e se o token enviado é válido
     if (!$passwordReset || !Hash::check($request->token, $passwordReset->token)) {
         return back()->withErrors(['email' => 'Token inválido ou expirado.']);
     }
 
-    // Procura o usuário pelo e-mail fornecido
     $user = User::where('email', $request->email)->first();
 
     if (!$user) {
         return back()->withErrors(['email' => 'Não encontramos um usuário com esse endereço de e-mail.']);
     }
 
-    // Atualiza a senha do usuário com a nova senha fornecida
-    $user->password = Hash::make($request->password); 
-    $user->save(); 
+    $user->password = Hash::make($request->password);
+    $user->save();
 
-    // Delete token
     DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
-
     return redirect('/login')->with('status', 'Sua senha foi redefinida com sucesso!');
-})->name('password.update'); // Dá um nome à rota como 'password.update'
+})->name('password.update');
 
-
+Route::post('/orders', [OrderController::class, 'store']);
 Route::get('/minhas-compras', [OrderController::class, 'userOrders'])->name('user.orders')->middleware('auth');
 
 

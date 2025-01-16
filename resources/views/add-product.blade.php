@@ -72,16 +72,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($products->data as $product)
-                        @php
-                            // Fetch the first active price for the product
-                            $price = \Stripe\Price::all(['product' => $product->id, 'active' => true, 'limit' => 1])->data[0] ?? null;
-                        @endphp
-                        @if($price)
+                    @foreach($products as $product)
+
                             <tr>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ $product->description }}</td>
-                                <td>€{{ number_format($price->unit_amount / 100, 2) }}</td>
+                                <td>{{ $product->nome }}</td>
+                                <td>{{ $product->descricao }}</td>
+                                <td>€{{ number_format($product->preco, 2) }}</td>
                                 <td>
                                     <form action="{{ route('products.delete', $product->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja remover este produto?');">
                                     @csrf
@@ -90,7 +86,7 @@
                                     </form>
                                 </td>
                             </tr>
-                        @endif
+
                     @endforeach
                 </tbody>
             </table>
