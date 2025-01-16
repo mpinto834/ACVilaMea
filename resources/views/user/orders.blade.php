@@ -53,7 +53,7 @@
                                 <tfoot>
                                     <tr>
                                         <td colspan="3" class="text-end"><strong>Total:</strong></td>
-                                        <td><strong>€{{ number_format($order->amount/100, 2) }}</strong></td>
+                                        <td><strong>€{{ number_format($order->amount, 2) }}</strong></td>
                                     </tr>
                                 </tfoot>
                             </table>
